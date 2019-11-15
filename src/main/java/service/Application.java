@@ -1,5 +1,6 @@
 package service;
 
+import model.Artist;
 import model.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -20,7 +21,9 @@ public class Application {
         try {
             factory = new AnnotationConfiguration().
                     configure().
-                    addPackage("model").
+                    //addPackage("com.xyz") //add package if used.
+                            addAnnotatedClass(User.class).
+                            addAnnotatedClass(Artist.class).
                             buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);

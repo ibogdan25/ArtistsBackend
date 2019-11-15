@@ -3,7 +3,9 @@ package model;
 import lombok.Getter;
 import lombok.Setter;
 
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -11,15 +13,22 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue
-    private Integer id;
+    @Column(name = "user_id")
+    private Integer userId;
+
     @Column(name = "user_name")
     private String username;
+
     @Column(name = "password")
     private String password;
 
-    public User(String username, String password) {
+    @OneToMany(mappedBy = "user")
+    private Set<Artist> artists;
+
+    public User(String username, String password, Set<Artist> artists) {
         this.username = username;
         this.password = password;
+        this.artists = artists;
     }
 
     public User() {
