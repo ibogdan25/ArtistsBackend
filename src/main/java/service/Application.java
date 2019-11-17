@@ -21,9 +21,7 @@ public class Application {
         try {
             factory = new AnnotationConfiguration().
                     configure().
-                    //addPackage("com.xyz") //add package if used.
-                            addAnnotatedClass(User.class).
-                            addAnnotatedClass(Artist.class).
+                    addPackage("model").
                             buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);

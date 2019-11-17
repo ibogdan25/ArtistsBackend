@@ -11,9 +11,15 @@ import javax.persistence.*;
 public class Artist {
     @Id
     @GeneratedValue
-    private Integer artist_id;
+    @Column(name = "artist_id")
+    private Integer artistId;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
     private String description;
+
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
