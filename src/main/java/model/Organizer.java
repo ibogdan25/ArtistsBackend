@@ -12,7 +12,7 @@ public class Organizer {
     @Id
     @GeneratedValue
     @Column(name = "organizer_id")
-    private Integer artistId;
+    private Integer organizerId;
 
     @Column(name = "name")
     private String name;
