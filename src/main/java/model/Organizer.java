@@ -6,13 +6,13 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "artists")
+@Table(name = "organizers")
 @Getter @Setter
-public class Artist {
+public class Organizer {
     @Id
     @GeneratedValue
-    @Column(name = "artist_id")
-    private Integer artistId;
+    @Column(name = "organizer_id")
+    private Integer organizerId;
 
     @Column(name = "name")
     private String name;
@@ -20,11 +20,13 @@ public class Artist {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "url_photo_cover")
+    private String urlPhotoCover;
+
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
-    @OneToOne
-    @JoinColumn(name="id_artist_category", nullable = false)
-    private ArtistCategory artistCategory;
-
 }
