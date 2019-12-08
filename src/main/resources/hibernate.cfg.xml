@@ -9,12 +9,13 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost/artists_db?createDatabaseIfNotExist=YES&amp;useUnicode=YES&amp;characterEncoding=UTF-8</property>
         <property name="connection.username">root</property>
-        <property name="connection.password"></property>
+        <property name="connection.password">Ifeelbetternow00</property>
         <property name="connection.pool_size">10</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="show_sql">true</property>
         <mapping class="model.User" />
         <mapping class="model.Artist" />
+        <mapping class="model.ArtistCategory"/>
     </session-factory>
 </hibernate-configuration>
