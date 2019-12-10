@@ -1,6 +1,7 @@
 package service;
 
 import model.Artist;
+import model.ArtistCategory;
 import model.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;

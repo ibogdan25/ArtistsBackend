@@ -17,5 +17,6 @@
         <mapping class="model.User" />
         <mapping class="model.Session"/>
         <mapping class="model.Artist" />
+        <mapping class="model.ArtistCategory"/>
     </session-factory>
 </hibernate-configuration>
