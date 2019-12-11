@@ -15,7 +15,7 @@ public class Application {
     private static SessionFactory factory;
 
     public static void main(String[] args) {
-        startHibernate();
+        //startHibernate();
         SpringApplication.run(Application.class, args);
     }
     public static void startHibernate() {
