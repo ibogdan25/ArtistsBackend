@@ -1,4 +1,7 @@
 package persistence;
 
-public interface IArtistCategoryRepository {
+import model.ArtistCategory;
+
+public interface IArtistCategoryRepository extends IRepository<Integer, ArtistCategory> {
+
 }

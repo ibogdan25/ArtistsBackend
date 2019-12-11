@@ -26,4 +26,28 @@ public class ArtistCategory {
 
     public ArtistCategory() {
     }
+
+    public Integer getIdArtistCategory() {
+        return idArtistCategory;
+    }
+
+    public void setIdArtistCategory(Integer idArtistCategory) {
+        this.idArtistCategory = idArtistCategory;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
