@@ -12,7 +12,6 @@ public class Session {
     private Integer sessionId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
     @JoinColumn(name = "user_id")
     private User user;
 

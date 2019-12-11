@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="artists_db@localhost" uuid="8de1f2a5-50c7-4f8d-961c-b67a078adbf6">
-      <driver-ref>mysql</driver-ref>
+    <data-source source="LOCAL" name="MySQL - artists_db@localhost" uuid="8de1f2a5-50c7-4f8d-961c-b67a078adbf6">
+      <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/artists_db</jdbc-url>
-      <driver-properties>
-        <property name="autoReconnect" value="true" />
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-        <property name="characterEncoding" value="utf8" />
-        <property name="characterSetResults" value="utf8" />
-        <property name="yearIsDateType" value="false" />
-      </driver-properties>
     </data-source>
     <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="426d37e4-5ab8-42e8-9a4b-c2375b1f78dd">
       <driver-ref>mysql</driver-ref>
@@ -32,6 +24,12 @@ C:/Users/Bogdan/Documents/GitHub/ArtistsBackend/src/main/resources/hibernate.cfg
         <property name="characterSetResults" value="utf8" />
         <property name="tinyInt1isBit" value="false" />
       </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="MySQL - @localhost" uuid="f8065aa2-7de2-4977-876c-deeabb66c5f0">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
     </data-source>
   </component>
 </project>

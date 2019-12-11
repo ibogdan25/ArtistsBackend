@@ -23,6 +23,7 @@ public class Artist {
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
+
     @OneToOne
     @JoinColumn(name="id_artist_category", nullable = false)
     private ArtistCategory artistCategory;
