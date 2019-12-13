@@ -29,18 +29,5 @@ public class SessionController {
     final String passwordMock = "iliee";
     final String sessionTokenMock = "asdasda";
 
-    @RequestMapping(value = "/user/connect", method = RequestMethod.POST)
-    public ResponseEntity connect(@RequestBody String json) {
-        userService.addUser(userNameMock, passwordMock);
-        final ObjectMapper objectMapper = new ObjectMapper();
-        UserPOJO userPOJO = null;
-        try {
-            userPOJO = objectMapper.readValue(json, UserPOJO.class);
-        } catch (IOException e) {
-            log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        return userPOJO.getUserOrEmail().equals(userNameMock) && userPOJO.getPassword().equals(passwordMock) ?
-                new ResponseEntity("asdasda", HttpStatus.OK) : new ResponseEntity(HttpStatus.UNAUTHORIZED);
-    }
+
 }
