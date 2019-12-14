@@ -29,6 +29,7 @@ public class UserServiceImpl {
         user.setPassword(password);
         user.setEmail(email);
 
+        userRepository.save(user);
         return RegisterState.REGISTERED;
     }
 

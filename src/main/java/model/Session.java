@@ -12,9 +12,9 @@ import java.util.Date;
 @Table(name = "sessions")
 public class Session {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "session_id")
-    private Integer sessionId;
+    private long sessionId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -10,9 +10,9 @@ import javax.persistence.*;
 @Getter @Setter
 public class Organizer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "organizer_id")
-    private Integer organizerId;
+    private long organizerId;
 
     @Column(name = "name")
     private String name;

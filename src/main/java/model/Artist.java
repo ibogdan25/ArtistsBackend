@@ -10,9 +10,9 @@ import javax.persistence.*;
 @Getter @Setter
 public class Artist {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "artist_id")
-    private Integer artistId;
+    private long artistId;
 
     @Column(name = "name")
     private String name;

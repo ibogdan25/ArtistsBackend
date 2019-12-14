@@ -11,9 +11,9 @@ import javax.persistence.*;
 @Getter
 public class ArtistCategory {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_artist_category")
-    private Integer idArtistCategory;
+    private long idArtistCategory;
 
     @Column(name = "name")
     private String name;

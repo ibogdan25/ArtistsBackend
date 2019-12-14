@@ -25,7 +25,7 @@ public class Application {
     public static void startHibernate() {
         try {
             factory = new Configuration().
-                    configure().
+                    configure("hibernate.cfg.xml").
                     addPackage("model").
                             buildSessionFactory();
         } catch (Throwable ex) {
