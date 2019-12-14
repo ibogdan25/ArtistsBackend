@@ -1,6 +1,5 @@
 package model;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,22 +7,25 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "artistcategories")
-@Setter @Getter
+@Setter
+@Getter
 public class ArtistCategory {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_artist_category")
-    private Integer idArtistCategory;
+    private long idArtistCategory;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
+
+    public ArtistCategory() {
+    }
 
     public ArtistCategory(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public ArtistCategory() {
     }
 }
