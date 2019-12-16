@@ -27,7 +27,7 @@ public class Application {
             factory = new Configuration().
                     configure("hibernate.cfg.xml").
                     addPackage("model").
-                            buildSessionFactory();
+                    buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);

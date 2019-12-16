@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +29,7 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private Set<Artist> artists;
 
     public User(String username, String password, Set<Artist> artists) {

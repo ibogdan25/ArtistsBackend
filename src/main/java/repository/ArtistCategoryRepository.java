@@ -1,9 +1,15 @@
 package repository;
 
+import model.Artist;
 import model.ArtistCategory;
+import model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Optional;
 
-public class ArtistCategoryRepository implements Repository<ArtistCategory, Integer> {
+public interface ArtistCategoryRepository extends JpaRepository<ArtistCategory, Long> {
+    Optional<ArtistCategory> findFirstByName(@Param("name") final String name);
 }
