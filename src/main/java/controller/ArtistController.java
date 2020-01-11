@@ -65,4 +65,11 @@ public class ArtistController {
         return artistService.getBySubcategory(Long.parseLong(subcategory_id));
     }
 
+
+    @GetMapping("/artists/id/{id}")
+    @ResponseBody
+    public Iterable<Artist> getAllById(@PathVariable String id) {
+        return artistService.getById(Long.parseLong(id));
+    }
+
 }

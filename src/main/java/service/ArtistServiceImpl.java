@@ -38,5 +38,10 @@ public class ArtistServiceImpl implements ArtistService{
         return artistRepository.findByArtistSubcategory(subcategoryId);
     }
 
+    @Override
+    public Iterable<Artist> getById(Long id) {
+        return artistRepository.findAllByArtistId(id);
+    }
+
 
 }

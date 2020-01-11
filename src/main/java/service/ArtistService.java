@@ -9,5 +9,6 @@ public interface ArtistService {
     Iterable<Artist> getAllByMultipleFields(String name, String category, String description);
     Iterable<Artist> getAll();
     Iterable<Artist> getBySubcategory(Long subcategoryId);
+    Iterable<Artist> getById(Long id);
 
 }
