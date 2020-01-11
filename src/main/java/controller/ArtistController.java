@@ -45,7 +45,7 @@ public class ArtistController {
     }
 
 
-    @GetMapping("/artists")
+    @GetMapping("/artists_filters")
     @ResponseBody
     public Iterable<Artist> getByMultipleFields(@RequestParam(name="name", required = false) String name,
                                                  @RequestParam(name = "category", required = false) String category,
@@ -53,4 +53,23 @@ public class ArtistController {
         System.out.println("params: name " + name + " cat: " + category);
         return artistService.getAllByMultipleFields(name, category, description);
     }
+
+    @GetMapping("/artists")
+    @ResponseBody
+    public Iterable<Artist> getAll() {
+        return artistService.getAll();
+    }
+    @GetMapping("/artists/subcategory/{subcategory_id}")
+    @ResponseBody
+    public Iterable<Artist> getAllBySubcategory(@PathVariable String subcategory_id) {
+        return artistService.getBySubcategory(Long.parseLong(subcategory_id));
+    }
+
+
+    @GetMapping("/artists/id/{id}")
+    @ResponseBody
+    public Iterable<Artist> getAllById(@PathVariable String id) {
+        return artistService.getById(Long.parseLong(id));
+    }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import repository.UserRepository;
 import service.SessionServiceImpl;
 import service.UserServiceImpl;
 
@@ -77,6 +78,51 @@ public class UserController {
             user.setPassword("");
             return new ResponseEntity(user, HttpStatus.OK);
         }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
+    }
+
+    @SuppressWarnings("Duplicates")
+    @RequestMapping(value = "/user/updateUserInfo", method = RequestMethod.POST)
+    public ResponseEntity updateUserInfo(@RequestHeader(name = "Authorization") String token, @RequestBody String json){
+        User user = sessionService.getSessionByToken(token);
+        if (user != null) {
+            final ObjectMapper objectMapper = new ObjectMapper();
+            UserRegisterPOJO userUpdateInfoPOJO = null;
+            try {
+                userUpdateInfoPOJO = objectMapper.readValue(json, UserRegisterPOJO.class);
+            } catch (IOException e) {
+                log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+
+            User foundUser = userService.getUserById(user.getUserId());
+            if (null == foundUser) {
+                return new ResponseEntity(new ErrorPOJO("Invalid user ID!"), HttpStatus.BAD_REQUEST);
+            }
+
+            if (null != userUpdateInfoPOJO.getPassword() && null != userUpdateInfoPOJO.getRepeatPassword()){
+                if (!userUpdateInfoPOJO.getPassword().equals(userUpdateInfoPOJO.getRepeatPassword())) {
+                    return new ResponseEntity(new ErrorPOJO("Password and repeatPassword must match."), HttpStatus.BAD_REQUEST);
+                }
+                else {
+                    foundUser.setPassword(userUpdateInfoPOJO.getPassword());
+                }
+            }
+            if (null != userUpdateInfoPOJO.getEmail()){
+                foundUser.setEmail(userUpdateInfoPOJO.getEmail());
+            }
+            if (null != userUpdateInfoPOJO.getUsername()){
+                foundUser.setUsername(userUpdateInfoPOJO.getUsername());
+            }
+
+            if (null != userService.updateUserInfo(user.getUserId(), foundUser))
+            {
+                return new ResponseEntity(foundUser, HttpStatus.OK);
+            }
+
+            return new ResponseEntity(new ErrorPOJO("FAILED TO UPDATE USER INFO"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 }

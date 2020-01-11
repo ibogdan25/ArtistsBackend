@@ -1,6 +1,7 @@
 package service;
 
 import model.Artist;
+import model.ArtistSubcategory;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,22 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public Iterable<Artist> getAllByMultipleFields(String name, String category, String description) {
-        return artistRepository.findAll(name, category, description);
+        return artistRepository.findAllByMultipleFields(name, category, description);
+    }
+
+    @Override
+    public Iterable<Artist> getAll() {
+        return  artistRepository.findAll();
+    }
+
+    @Override
+    public Iterable<Artist> getBySubcategory(Long subcategoryId) {
+        return artistRepository.findByArtistSubcategory(subcategoryId);
+    }
+
+    @Override
+    public Iterable<Artist> getById(Long id) {
+        return artistRepository.findAllByArtistId(id);
     }
 
 

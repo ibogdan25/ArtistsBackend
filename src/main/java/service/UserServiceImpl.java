@@ -2,6 +2,7 @@ package service;
 
 import model.RegisterState;
 import model.User;
+import model.UserRegisterPOJO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.UserRepository;
@@ -41,15 +42,22 @@ public class UserServiceImpl {
         return null;
     }
 
-    public User getUser(final Long userId) {
+    public User updateUserInfo(final Long userId, final User newUser){
         Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            return user.get();
+        if (user.isPresent()){
+            userRepository.save(newUser);
+            return newUser;
         }
+
         return null;
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User getUserById(final Long userId)
+    {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()){
+            return user.get();
+        }
+        return null;
     }
 }
