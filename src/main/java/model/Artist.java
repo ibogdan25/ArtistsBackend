@@ -23,6 +23,9 @@ public class Artist {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "profileImgSrc")
+    private String profileImgSrc;
+
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     @JsonManagedReference

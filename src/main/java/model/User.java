@@ -28,6 +28,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "profileImgSrc")
+    private String profileImgSrc;
+
     @OneToMany(mappedBy = "user")
     @JsonBackReference
     private Set<Artist> artists;

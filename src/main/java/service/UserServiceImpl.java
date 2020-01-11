@@ -40,4 +40,16 @@ public class UserServiceImpl {
         }
         return null;
     }
+
+    public User getUser(final Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        return null;
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }

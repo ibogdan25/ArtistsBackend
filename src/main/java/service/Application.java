@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
@@ -72,6 +73,9 @@ public class Application implements EnvironmentAware {
 
         final String startHibernate = env.getProperty(PROP_START_HIBERNATE, TRUE);
         properties.add(PROP_START_HIBERNATE, startHibernate);
+
+        final String imgPath = env.getProperty(PROP_PATH_TO_IMAGES, EMPTY_STRING);
+        properties.add(PROP_PATH_TO_IMAGES, imgPath);
 
         ServerContext.setProperties(properties);
     }
