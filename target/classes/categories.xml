@@ -30,5 +30,5 @@
             <subcategory>Acting groups</subcategory>
         </subcategories>
     </category>
-    <category name="Other"/>
+    <category name="Other"><subcategories><subcategory>-</subcategory>/subcategory></subcategories></category>
 </categories>
