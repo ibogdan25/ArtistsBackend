@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+
 @RestController
+@CrossOrigin(origins = "*")
 public class ArtistCategoryController {
 
     Logger log = Logger.getLogger(ArtistCategoryPOJO.class.getName());
