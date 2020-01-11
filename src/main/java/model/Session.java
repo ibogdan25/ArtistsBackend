@@ -16,7 +16,7 @@ public class Session {
     @Column(name = "session_id")
     private Long sessionId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name = "user_id")
     private User user;
 
