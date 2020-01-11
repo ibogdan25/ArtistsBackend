@@ -1,7 +1,6 @@
 package service;
 
 import model.Artist;
-import model.ArtistSubcategory;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

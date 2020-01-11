@@ -1,7 +1,5 @@
 package service;
 
-import controller.UserController;
-import model.FileUploadEntity;
 import model.FileUploadPOJO;
 import org.springframework.web.multipart.MultipartFile;
 import utils.ConstantsUtils;

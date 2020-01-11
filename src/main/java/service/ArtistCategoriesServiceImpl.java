@@ -1,7 +1,6 @@
 package service;
 
 import model.ArtistCategory;
-import model.ArtistCategoryPOJO;
 import model.ArtistSubcategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
