@@ -1,12 +1,21 @@
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\model\ArtistCategory.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\model\User.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\service\Application.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\service\SessionServiceImpl.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\controller\ArtistController.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\service\SessionService.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\controller\SessionController.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\model\UserPOJO.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\model\Artist.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\model\Session.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\tests\TestPOJOs.java
-C:\Users\Ilie\IdeaProjects\ArtistsBackend\src\main\java\model\Organizer.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\controller\ArtistController.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\model\SessionState.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\model\UserRegisterPOJO.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\repository\ArtistCategoryRepository.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\tests\TestPOJOs.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\service\SessionServiceImpl.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\service\Application.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\controller\UserController.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\service\UserServiceImpl.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\model\UserPOJO.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\model\User.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\repository\ArtistRepository.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\model\Artist.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\model\Session.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\model\RegisterState.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\service\SessionService.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\controller\SessionController.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\model\ArtistCategory.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\model\Organizer.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\repository\UserRepository.java
+E:\anul_3\semestrul_1\Proiect Colectiv\proiect_colectiv\ArtistsBackend\src\main\java\repository\SessionRepository.java
