@@ -1,12 +1,11 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
+        import com.fasterxml.jackson.annotation.JsonBackReference;
+        import com.fasterxml.jackson.annotation.JsonIgnore;
+        import com.fasterxml.jackson.annotation.JsonManagedReference;
+        import lombok.Getter;
+        import lombok.Setter;
+        import javax.persistence.*;
 
 @Entity
 @Table(name = "artists")
@@ -22,6 +21,19 @@ public class Artist {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    @Column(name = "cover_url")
+    private String coverUrl;
+
+    @Column(name = "stars")
+    private Integer stars;
+
+    @OneToOne
+    @JoinColumn(name="contact_info_id", nullable = false)
+    private ContactInfo contactInfo;
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)

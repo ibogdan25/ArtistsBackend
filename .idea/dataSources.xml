@@ -60,5 +60,17 @@ C:/Users/Bogdan/Documents/GitHub/ArtistsBackend/src/main/resources/hibernate.cfg
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="@localhost" uuid="882fa549-5ef1-41cd-ac12-8aed07aa26a9">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://localhost:3306</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="MariaDB - @localhost" uuid="cb206d35-71ff-4903-b36f-9e824e8879b4">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://localhost:3306</jdbc-url>
+    </data-source>
   </component>
 </project>
