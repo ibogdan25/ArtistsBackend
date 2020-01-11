@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,9 +24,13 @@ public class ArtistSubcategory {
 
     @ManyToOne
     @JoinColumn(name="id_artist_category", nullable = false)
+    @JsonManagedReference
     private ArtistCategory artistCategory;
 
     public ArtistSubcategory(String name) {
         this.name = name;
+    }
+
+    public ArtistSubcategory() {
     }
 }

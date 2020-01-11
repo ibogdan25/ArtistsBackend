@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
     Iterable<Artist> findAllByUser(User user);
 
-    @Query("SELECT a FROM Artist a WHERE (:name is null or a.name = :name ) and (:category is null or a.artistCategory.name = :category  )" +
+    @Query("SELECT a FROM Artist a WHERE (:name is null or a.name = :name ) and (:category is null or a.artistSubcategory.name = :category  )" +
             " and (:desc is null or a.description=:desc)")
     Iterable<Artist> findAll( @Param("name")final String name, @Param("category")final String category, @Param("desc")final String desc);
 }
