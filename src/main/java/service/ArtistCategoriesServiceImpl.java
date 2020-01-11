@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import repository.ArtistCategoryRepository;
 import repository.ArtistSubcategoryRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ArtistCategoriesServiceImpl {
@@ -32,6 +30,7 @@ public class ArtistCategoriesServiceImpl {
             for(ArtistSubcategory artistSubcategory: artistCategory.getArtistSubcategorySet()) {
                 if (!category.getArtistSubcategorySet().stream().anyMatch( sc -> sc.getName().equals(artistCategory.getName()))) {
                     category.getArtistSubcategorySet().add(artistSubcategory);
+                    artistSubcategoryRepository.save(artistSubcategory);
                 }
             }
             artistCategoryRepository.save(category);
@@ -53,5 +52,11 @@ public class ArtistCategoriesServiceImpl {
         return pojoList;
 
 
+    }
+
+    public Set<ArtistSubcategory> findAllSubcategories(String categoryName){
+
+        Optional<ArtistCategory> artistCategory = artistCategoryRepository.findFirstByName(categoryName);
+        return artistCategory.map(ArtistCategory::getArtistSubcategorySet).orElse(null);
     }
 }

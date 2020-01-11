@@ -3,6 +3,7 @@ package controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.ArtistCategory;
 import model.ArtistCategoryPOJO;
+import model.ArtistSubcategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import service.ArtistCategoryService;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @RestController
@@ -24,11 +26,16 @@ public class ArtistCategoryController {
     private ArtistCategoriesServiceImpl artistCategoriesService;
 
 
+
     @RequestMapping(value="/artistCategory/all",method = RequestMethod.GET)
     public List<ArtistCategory> getAllArtistCategories(){
         return this.artistCategoriesService.findAll();
     }
 
+    @RequestMapping(value="/artistCategory/{name}",method = RequestMethod.GET)
+    public Set<ArtistSubcategory> getAllArtistSubcategories(@PathVariable("name") String name) {
+        return this.artistCategoriesService.findAllSubcategories(name);
+    }
 //
 //    @RequestMapping(value = "/artistCategory/add", method = RequestMethod.POST)
 //    public ResponseEntity addArtistCategory(@RequestBody String json) {
