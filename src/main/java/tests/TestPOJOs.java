@@ -2,7 +2,8 @@ package tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.UserPOJO;
-import org.testng.annotations.Test;
+import org.junit.Test;
+
 
 import java.io.IOException;
 

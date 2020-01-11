@@ -1,5 +1,8 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +15,7 @@ public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "artist_id")
-    private long artistId;
+    private Long artistId;
 
     @Column(name = "name")
     private String name;
@@ -22,10 +25,11 @@ public class Artist {
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
+    @JsonManagedReference
     private User user;
 
     @OneToOne
-    @JoinColumn(name="id_artist_category", nullable = false)
-    private ArtistCategory artistCategory;
-
+    @JoinColumn(name="id_artist_subcategory", nullable = false)
+    @JsonManagedReference
+    private ArtistSubcategory artistSubcategory;
 }

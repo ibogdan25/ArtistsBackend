@@ -16,10 +16,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class SessionServiceImpl implements SessionService{
+public class SessionServiceImpl implements SessionService {
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
-
 
     @Autowired
     public SessionServiceImpl(SessionRepository sessionRepository, UserRepository userRepository) {
@@ -34,7 +33,7 @@ public class SessionServiceImpl implements SessionService{
         final LocalDateTime dateNow = LocalDateTime.now();
         dateNow.plusDays(1);
         final Date expiredDate = Date.from(dateNow.atZone(ZoneId.systemDefault()).toInstant());
-        final String token = String.format("%s%s%s",UUID.randomUUID().toString().toUpperCase(), user.getUsername(), dateNow.toString());
+        final String token = String.format("%s%s%s", UUID.randomUUID().toString().toUpperCase(), user.getUsername(), dateNow.toString());
         optionalSession.ifPresent(session -> {
             session.setExpireTime(expiredDate);
             session.setSessionToken(token);
@@ -64,5 +63,13 @@ public class SessionServiceImpl implements SessionService{
             return SessionState.AVAILABLE;
         }
         return SessionState.EXPIRED;
+    }
+
+    public User getSessionByToken(final String token) {
+        Optional<Session> optionalSession = sessionRepository.findFirstBySessionToken(token);
+        if (optionalSession.isPresent()) {
+            return optionalSession.get().getUser();
+        }
+        return null;
     }
 }
