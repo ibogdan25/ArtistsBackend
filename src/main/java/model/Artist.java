@@ -31,10 +31,9 @@ public class Artist {
     @Column(name = "stars")
     private Integer stars;
 
-//    @Column(name = "contact_info")
-//    private ContactInfo contactInfo;
-//
-
+    @OneToOne
+    @JoinColumn(name="contact_info_id", nullable = false)
+    private ContactInfo contactInfo;
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
