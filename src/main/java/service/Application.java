@@ -14,7 +14,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import utils.Properties;
 import utils.ServerContext;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
@@ -34,8 +33,12 @@ public class Application implements EnvironmentAware {
 
     private static Environment env;
 
-    @Autowired
     private static ArtistCategoriesServiceImpl artistCategoriesService;
+
+    @Autowired
+    public Application(ArtistCategoriesServiceImpl artistCategoriesService) {
+        this.artistCategoriesService = artistCategoriesService;
+    }
 
     @Override
     public void setEnvironment(Environment env) {
@@ -60,6 +63,7 @@ public class Application implements EnvironmentAware {
         }
     }
 
+
     private static void loadProperties() {
         Properties properties = new Properties();
         final String loadCategoriesFromFile = env.getProperty(PROP_LOAD_CATEGORIES_FROM_FILE, EMPTY_STRING);
@@ -72,6 +76,9 @@ public class Application implements EnvironmentAware {
 
         final String startHibernate = env.getProperty(PROP_START_HIBERNATE, TRUE);
         properties.add(PROP_START_HIBERNATE, startHibernate);
+
+        final String imgPath = env.getProperty(PROP_PATH_TO_IMAGES, EMPTY_STRING);
+        properties.add(PROP_PATH_TO_IMAGES, imgPath);
 
         ServerContext.setProperties(properties);
     }
@@ -94,7 +101,7 @@ public class Application implements EnvironmentAware {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             xmlparsers.Categories categories = (xmlparsers.Categories) jaxbUnmarshaller.unmarshal(file);
             for (xmlparsers.Category category : categories.getCategories()) {
-                model.ArtistCategory artistCategory = new model.ArtistCategory(category.getName(), "");
+                model.ArtistCategory artistCategory = new model.ArtistCategory(category.getName());
                 Set<ArtistSubcategory> artistSubcategories = new HashSet<>();
                 for (String subCategory : category.getSubcategories()) {
                     artistSubcategories.add(new ArtistSubcategory(subCategory));

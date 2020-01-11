@@ -1,12 +1,14 @@
 package model;
 
-        import com.fasterxml.jackson.annotation.JsonBackReference;
-        import com.fasterxml.jackson.annotation.JsonIgnore;
-        import com.fasterxml.jackson.annotation.JsonManagedReference;
-        import lombok.Getter;
-        import lombok.Setter;
-        import javax.persistence.*;
-        import javax.validation.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+
+
 
 @Entity
 @Table(name = "artists")

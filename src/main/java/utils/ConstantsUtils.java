@@ -22,6 +22,8 @@ public class ConstantsUtils {
      */
     public final static String PROP_RESET_DATABASE = "resetDatabase";
 
+    public final static String PROP_PATH_TO_IMAGES = "imagesPath";
+
     public final static String TRUE = "TRUE";
     public final static String FALSE = "FALSE";
     public final static String EMPTY_STRING = "";

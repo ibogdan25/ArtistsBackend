@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.ArtistService;
 import service.UserServiceImpl;
-
 import java.io.IOException;
 
 @RestController
@@ -46,7 +45,7 @@ public class ArtistController {
 
     @GetMapping("/artists_filters")
     @ResponseBody
-    public Iterable<Artist> getByMultipleFields(@RequestParam(name="name", required = false) String name,
+    public Iterable<Artist> getByMultipleFields(@RequestParam(name = "name", required = false) String name,
                                                  @RequestParam(name = "category", required = false) String category,
                                                 @RequestParam(name = "description", required = false) String description) {
         System.out.println("params: name " + name + " cat: " + category);

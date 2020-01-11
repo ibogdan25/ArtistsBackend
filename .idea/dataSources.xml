@@ -2,8 +2,8 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="MySQL - artists_db@localhost" uuid="8de1f2a5-50c7-4f8d-961c-b67a078adbf6">
-      <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/artists_db</jdbc-url>
     </data-source>
@@ -26,16 +26,39 @@ C:/Users/Bogdan/Documents/GitHub/ArtistsBackend/src/main/resources/hibernate.cfg
       </driver-properties>
     </data-source>
     <data-source source="LOCAL" name="MySQL - @localhost" uuid="f8065aa2-7de2-4977-876c-deeabb66c5f0">
-      <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
     </data-source>
     <data-source source="LOCAL" name="artists_db@localhost" uuid="d96c2edf-c9a1-4394-991a-27e9e6e38f61">
-      <driver-ref>mysql.8</driver-ref>
+      <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/artists_db</jdbc-url>
+      <driver-properties>
+        <property name="autoReconnect" value="true" />
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+        <property name="characterEncoding" value="utf8" />
+        <property name="characterSetResults" value="utf8" />
+        <property name="yearIsDateType" value="false" />
+      </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="@localhost" uuid="30881dd1-0640-4e92-8941-c54947dcd99a">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
+      <driver-properties>
+        <property name="autoReconnect" value="true" />
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+        <property name="characterEncoding" value="utf8" />
+        <property name="characterSetResults" value="utf8" />
+        <property name="yearIsDateType" value="false" />
+      </driver-properties>
     </data-source>
     <data-source source="LOCAL" name="@localhost" uuid="882fa549-5ef1-41cd-ac12-8aed07aa26a9">
       <driver-ref>mariadb</driver-ref>

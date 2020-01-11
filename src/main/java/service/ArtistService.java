@@ -1,7 +1,6 @@
 package service;
 
 import model.Artist;
-import model.ArtistSubcategory;
 import model.User;
 
 public interface ArtistService {

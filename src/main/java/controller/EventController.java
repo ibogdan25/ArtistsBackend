@@ -1,12 +1,14 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.OrganizerPOJO;
+import com.fasterxml.jackson.databind.SerializationConfig;
+import model.Event;
+import model.EventPOJO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.OrganizerService;
+import service.EventService;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -14,20 +16,21 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-public class OrganizerController {
-    Logger log = Logger.getLogger(OrganizerPOJO.class.getName());
+@CrossOrigin(origins = "*")
+public class EventController {
+    Logger log = Logger.getLogger(EventPOJO.class.getName());
 
     @Autowired
-    private OrganizerService organizerService;
+    private EventService eventService;
 
-    @RequestMapping(value = "/organizer/add", method = RequestMethod.POST)
-    public ResponseEntity addOrganizer(@RequestBody String json) {
+    @RequestMapping(value = "/event/add", method = RequestMethod.POST)
+    public ResponseEntity addEvent(@RequestBody String json) throws IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
-        OrganizerPOJO pojo;
+        EventPOJO pojo;
         try {
-            pojo = objectMapper.readValue(json, OrganizerPOJO.class);
-            long id = this.organizerService.add(pojo);
-            log.info("Organizer with id " + id + " has been created!");
+            pojo = objectMapper.readValue(json, EventPOJO.class);
+            long id = this.eventService.add(pojo);
+            log.info("Event with id " + id + " has been created!");
             return new ResponseEntity(HttpStatus.OK);
         } catch (IOException e) {
             log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
@@ -38,11 +41,11 @@ public class OrganizerController {
         }
     }
 
-    @RequestMapping(value = "/organizer/delete", method = RequestMethod.DELETE)
-    public ResponseEntity deleteOrganizer(@RequestParam long id) {
+    @RequestMapping(value = "/event/delete", method = RequestMethod.DELETE)
+    public ResponseEntity deleteEvent(@RequestParam long id) {
         try {
-            this.organizerService.delete(id);
-            log.info("Organizer with id " + id + " has been deleted!");
+            this.eventService.delete(id);
+            log.info("Event with id " + id + " has been deleted!");
             return new ResponseEntity(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             log.warning("BAD_REQUEST: " + e.toString());
@@ -50,14 +53,14 @@ public class OrganizerController {
         }
     }
 
-    @RequestMapping(value = "/organizer/update", method = RequestMethod.PUT)
-    public ResponseEntity updateOrganizer(@RequestBody String json) {
-        OrganizerPOJO pojo;
+    @RequestMapping(value = "/event/update", method = RequestMethod.PUT)
+    public ResponseEntity updateEvent(@RequestBody String json) {
+        EventPOJO pojo;
         final ObjectMapper objectMapper = new ObjectMapper();
         try {
-            pojo = objectMapper.readValue(json, OrganizerPOJO.class);
-            this.organizerService.update(pojo);
-            log.info("Organizer with id " + pojo.getId() + " has been updated!");
+            pojo = objectMapper.readValue(json, EventPOJO.class);
+            this.eventService.update(pojo);
+            log.info("Event with id " + pojo.getId() + " has been updated!");
             return new ResponseEntity(HttpStatus.OK);
         } catch (IOException e) {
             log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
@@ -68,18 +71,19 @@ public class OrganizerController {
         }
     }
 
-    @RequestMapping(value = "/organizer", method = RequestMethod.GET)
-    public OrganizerPOJO getOrganizer(@RequestParam long id) {
+    @RequestMapping(value = "/event", method = RequestMethod.GET)
+    public EventPOJO getOrganizer(@RequestParam long id) {
         try {
-            return this.organizerService.findById(id);
+            return this.eventService.findById(id);
         } catch (EntityNotFoundException e) {
             log.warning("BAD_REQUEST: " + e.toString());
             return null;
         }
     }
 
-    @RequestMapping(value = "/organizer/all", method = RequestMethod.GET)
-    public List<OrganizerPOJO> getAllOrganizers() {
-        return this.organizerService.findAll();
+
+    @RequestMapping(value = "/event/all", method = RequestMethod.GET)
+    public List<EventPOJO> getAllOrganizers() {
+        return this.eventService.findAll();
     }
 }

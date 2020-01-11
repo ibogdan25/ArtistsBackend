@@ -40,4 +40,23 @@ public class UserServiceImpl {
         }
         return null;
     }
+
+    public User updateUserInfo(final Long userId, final User newUser){
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()){
+            userRepository.save(newUser);
+            return newUser;
+        }
+
+        return null;
+    }
+
+    public User getUserById(final Long userId)
+    {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()){
+            return user.get();
+        }
+        return null;
+    }
 }

@@ -1,7 +1,6 @@
 package service;
 
 import model.Artist;
-import model.ArtistSubcategory;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,5 +50,9 @@ public class ArtistServiceImpl implements ArtistService{
         return  artistRepository.save(artist);
     }
 
+    @Override
+    public Artist saveArtist(Artist artist) {
+        return artistRepository.save(artist);
+    }
 
 }
