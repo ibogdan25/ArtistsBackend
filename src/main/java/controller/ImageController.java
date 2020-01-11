@@ -1,5 +1,6 @@
 package controller;
 
+import model.Artist;
 import model.FileUploadEntity;
 import model.FileUploadPOJO;
 import model.User;
@@ -9,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import service.ArtistService;
 import service.FilesManager;
 import service.SessionServiceImpl;
 import service.UserServiceImpl;
@@ -17,6 +19,8 @@ import javax.security.auth.callback.Callback;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
@@ -25,6 +29,8 @@ import java.util.logging.Logger;
 public class ImageController {
     private static Logger log = Logger.getLogger(FilesManager.class.getName());
     private final Integer MAX_THREADS = 8;
+    @Autowired
+    private ArtistService artistService;
     @Autowired
     private UserServiceImpl userService;
     @Autowired
@@ -40,11 +46,15 @@ public class ImageController {
         Callable<String> task = () -> filesManager.storeFile(info, file);
         Future<String> future = pool.submit(task);
         try {
+            User userSession = sessionService.getSessionByToken(token);
+            if (userSession == null){
+                return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            }
+
             final String pathName = future.get();
             if (pathName != null) {
                 if (info.getFileUploadEntity().equals(FileUploadEntity.USER_PROFILE)) {
                     User user = userService.getUserById(info.getId());
-                    User userSession = sessionService.getSessionByToken(token);
                     if (user != null && userSession != null && user.getUserId() == userSession.getUserId()) {
                         user.setProfileImgSrc(pathName);
                         userService.updateUserInfo(user.getUserId(), user);
@@ -52,6 +62,38 @@ public class ImageController {
                     } else {
                         return new ResponseEntity(HttpStatus.UNAUTHORIZED);
                     }
+                }
+
+                if (info.getFileUploadEntity().equals(FileUploadEntity.ARTIST_COVER)){
+                    try {
+                        Iterable<Artist> foundArtist = artistService.getById(info.getId());
+                        Artist artist = foundArtist.iterator().next();
+                        artist.setCoverUrl(pathName);
+                        artistService.saveArtist(artist);
+                        return new ResponseEntity(HttpStatus.OK);
+                    } catch (Exception e){
+                        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                    }
+                }
+
+                if (info.getFileUploadEntity().equals(FileUploadEntity.ARTIST_AVATAR)){
+                    try {
+                        Iterable<Artist> foundArtist = artistService.getById(info.getId());
+                        Artist artist = foundArtist.iterator().next();
+                        artist.setAvatarUrl(pathName);
+                        artistService.saveArtist(artist);
+                        return new ResponseEntity(HttpStatus.OK);
+                    } catch (Exception e){
+                        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                    }
+                }
+
+                if (info.getFileUploadEntity().equals(FileUploadEntity.EVENT_POSTER)){
+                    // TO DO: Solve for events
+                }
+
+                if (info.getFileUploadEntity().equals(FileUploadEntity.POST)){
+                    // TO DO: Solve for posts
                 }
             }
         } catch (InterruptedException e) {

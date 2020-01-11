@@ -43,5 +43,9 @@ public class ArtistServiceImpl implements ArtistService{
         return artistRepository.findAllByArtistId(id);
     }
 
+    @Override
+    public Artist saveArtist(Artist artist) {
+        return artistRepository.save(artist);
+    }
 
 }

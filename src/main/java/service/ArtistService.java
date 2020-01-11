@@ -10,5 +10,5 @@ public interface ArtistService {
     Iterable<Artist> getAll();
     Iterable<Artist> getBySubcategory(Long subcategoryId);
     Iterable<Artist> getById(Long id);
-
+    Artist saveArtist(Artist artist);
 }

@@ -1,5 +1,5 @@
 package model;
 
 public enum FileUploadEntity {
-    ARTIST_COVER, USER_PROFILE, POST
+    ARTIST_AVATAR, ARTIST_COVER, USER_PROFILE, POST, EVENT_POSTER
 }
