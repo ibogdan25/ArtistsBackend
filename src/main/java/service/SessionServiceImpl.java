@@ -64,4 +64,12 @@ public class SessionServiceImpl implements SessionService {
         }
         return SessionState.EXPIRED;
     }
+
+    public User getSessionByToken(final String token) {
+        Optional<Session> optionalSession = sessionRepository.findFirstBySessionToken(token);
+        if (optionalSession.isPresent()) {
+            return optionalSession.get().getUser();
+        }
+        return null;
+    }
 }

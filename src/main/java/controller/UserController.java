@@ -69,4 +69,15 @@ public class UserController {
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @RequestMapping(value = "/user/info", method = RequestMethod.GET)
+    public ResponseEntity getUserInfo(@RequestHeader(name="Authorization") String token) {
+        User user = sessionService.getSessionByToken(token);
+        if (user != null) {
+            user.setPassword("");
+            return new ResponseEntity(user, HttpStatus.OK);
+        }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
+
+    }
 }
