@@ -25,7 +25,6 @@ public class ArtistController {
         return "Greetings from Spring Boot!";
     }
 
-
     @RequestMapping(value = "/artists/user",  method = RequestMethod.GET)
     public ResponseEntity<?> getByUser(@RequestBody String userJson) {
         final ObjectMapper objectMapper = new ObjectMapper();;
@@ -67,8 +66,27 @@ public class ArtistController {
 
     @GetMapping("/artists/id/{id}")
     @ResponseBody
-    public Iterable<Artist> getAllById(@PathVariable String id) {
+    public Artist getAllById(@PathVariable String id) {
         return artistService.getById(Long.parseLong(id));
+    }
+
+    @RequestMapping(value = "/artists", method = RequestMethod.POST)
+    public ResponseEntity saveArtist(@RequestBody String json){
+        System.out.println("save Artist");
+        final ObjectMapper objectMapper = new ObjectMapper();
+        Artist artist;
+        try {
+            artist = objectMapper.readValue(json, Artist.class);
+        } catch (IOException e) {
+            //log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        final Artist artistFromDb = artistService.getById(artist.getArtistId());
+        if (artistFromDb == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        artistService.save(artist);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
