@@ -83,8 +83,8 @@ public class UserController {
     }
 
     @SuppressWarnings("Duplicates")
-    @RequestMapping(value = "/user/{userId}/updateUserInfo", method = RequestMethod.POST)
-    public ResponseEntity updateUserInfo(@RequestHeader(name = "Authorization") String token, @RequestBody String json, @PathVariable String userId){
+    @RequestMapping(value = "/user/updateUserInfo", method = RequestMethod.POST)
+    public ResponseEntity updateUserInfo(@RequestHeader(name = "Authorization") String token, @RequestBody String json){
         /*
         userId, username, email, password, repeatPassword
         */
@@ -99,7 +99,7 @@ public class UserController {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
 
-            User foundUser = userService.getUserById(Long.parseLong(userId));
+            User foundUser = userService.getUserById(user.getUserId());
             if (null == foundUser) {
                 return new ResponseEntity(new ErrorPOJO("Invalid user ID!"), HttpStatus.BAD_REQUEST);
             }
@@ -119,7 +119,7 @@ public class UserController {
                 foundUser.setUsername(userUpdateInfoPOJO.getUsername());
             }
 
-            if (null != userService.updateUserInfo(Long.parseLong(userId), foundUser))
+            if (null != userService.updateUserInfo(user.getUserId(), foundUser))
             {
                 return new ResponseEntity(new ErrorPOJO("USER INFORMATION UPDATED"), HttpStatus.OK);
             }
