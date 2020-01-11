@@ -25,13 +25,17 @@ public class ArtistCategoriesServiceImpl {
         Optional<ArtistCategory> optional = artistCategoryRepository.findFirstByName(artistCategory.getName());
         if (!optional.isPresent()) {
             artistCategoryRepository.save(artistCategory);
+            artistCategory.getArtistSubcategorySet().forEach(sc ->{
+                sc.setArtistCategory(artistCategory);
+                artistSubcategoryRepository.save(sc);
+            });
         } else {
             final ArtistCategory category = optional.get();
             for(ArtistSubcategory artistSubcategory: artistCategory.getArtistSubcategorySet()) {
                 if (!category.getArtistSubcategorySet().stream().anyMatch( sc -> sc.getName().equals(artistCategory.getName()))) {
                     category.getArtistSubcategorySet().add(artistSubcategory);
-                    artistSubcategoryRepository.save(artistSubcategory);
                 }
+                    artistSubcategoryRepository.save(artistSubcategory);
             }
             artistCategoryRepository.save(category);
         }
@@ -57,6 +61,12 @@ public class ArtistCategoriesServiceImpl {
     public Set<ArtistSubcategory> findAllSubcategories(String categoryName){
 
         Optional<ArtistCategory> artistCategory = artistCategoryRepository.findFirstByName(categoryName);
+        return artistCategory.map(ArtistCategory::getArtistSubcategorySet).orElse(null);
+    }
+
+    public Set<ArtistSubcategory> findAllSubcategoriesById(Long id){
+
+        Optional<ArtistCategory> artistCategory = artistCategoryRepository.findFirstByIdArtistCategory(id);
         return artistCategory.map(ArtistCategory::getArtistSubcategorySet).orElse(null);
     }
 }
