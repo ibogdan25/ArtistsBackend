@@ -45,7 +45,6 @@ public class UserServiceImpl {
     public User updateUserInfo(final Long userId, final User newUser){
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()){
-            userRepository.deleteById(userId);
             userRepository.save(newUser);
             return newUser;
         }

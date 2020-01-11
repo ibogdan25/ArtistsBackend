@@ -85,9 +85,6 @@ public class UserController {
     @SuppressWarnings("Duplicates")
     @RequestMapping(value = "/user/updateUserInfo", method = RequestMethod.POST)
     public ResponseEntity updateUserInfo(@RequestHeader(name = "Authorization") String token, @RequestBody String json){
-        /*
-        userId, username, email, password, repeatPassword
-        */
         User user = sessionService.getSessionByToken(token);
         if (user != null) {
             final ObjectMapper objectMapper = new ObjectMapper();
@@ -121,7 +118,7 @@ public class UserController {
 
             if (null != userService.updateUserInfo(user.getUserId(), foundUser))
             {
-                return new ResponseEntity(new ErrorPOJO("USER INFORMATION UPDATED"), HttpStatus.OK);
+                return new ResponseEntity(foundUser, HttpStatus.OK);
             }
 
             return new ResponseEntity(new ErrorPOJO("FAILED TO UPDATE USER INFO"), HttpStatus.INTERNAL_SERVER_ERROR);
