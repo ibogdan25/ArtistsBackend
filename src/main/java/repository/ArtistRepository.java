@@ -18,4 +18,6 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     @Query("SELECT a from Artist a where a.artistSubcategory.idArtistSubcategory = :subcategory_id ")
     Iterable<Artist> findByArtistSubcategory(@Param("subcategory_id")final Long subcategoryId);
 
+    Iterable<Artist> findAllByArtistId(Long id);
+
 }
