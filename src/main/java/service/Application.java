@@ -34,8 +34,12 @@ public class Application implements EnvironmentAware {
 
     private static Environment env;
 
-    @Autowired
     private static ArtistCategoriesServiceImpl artistCategoriesService;
+
+    @Autowired
+    public Application(ArtistCategoriesServiceImpl artistCategoriesService) {
+        this.artistCategoriesService = artistCategoriesService;
+    }
 
     @Override
     public void setEnvironment(Environment env) {
@@ -59,6 +63,7 @@ public class Application implements EnvironmentAware {
             throw new ExceptionInInitializerError(ex);
         }
     }
+
 
     private static void loadProperties() {
         Properties properties = new Properties();
@@ -94,7 +99,7 @@ public class Application implements EnvironmentAware {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             xmlparsers.Categories categories = (xmlparsers.Categories) jaxbUnmarshaller.unmarshal(file);
             for (xmlparsers.Category category : categories.getCategories()) {
-                model.ArtistCategory artistCategory = new model.ArtistCategory(category.getName(), "");
+                model.ArtistCategory artistCategory = new model.ArtistCategory(category.getName());
                 Set<ArtistSubcategory> artistSubcategories = new HashSet<>();
                 for (String subCategory : category.getSubcategories()) {
                     artistSubcategories.add(new ArtistSubcategory(subCategory));
