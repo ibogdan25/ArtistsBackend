@@ -6,16 +6,18 @@ package model;
         import lombok.Getter;
         import lombok.Setter;
         import javax.persistence.*;
+        import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "artists")
 @Getter @Setter
-public class Artist {
+public class    Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "artist_id")
     private Long artistId;
 
+    @NotEmpty(message = "Name field in mandatory")
     @Column(name = "name")
     private String name;
 

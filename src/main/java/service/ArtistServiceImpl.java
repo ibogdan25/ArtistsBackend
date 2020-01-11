@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.ArtistRepository;
 
+import java.util.Optional;
+
 @Service
 public class ArtistServiceImpl implements ArtistService{
     private ArtistRepository artistRepository;
@@ -39,8 +41,14 @@ public class ArtistServiceImpl implements ArtistService{
     }
 
     @Override
-    public Iterable<Artist> getById(Long id) {
-        return artistRepository.findAllByArtistId(id);
+    public Artist getById(Long id) {
+        Optional<Artist> artist = artistRepository.findById(id);
+        return artist.orElse(null);
+    }
+
+    @Override
+    public Artist save(Artist artist) {
+        return  artistRepository.save(artist);
     }
 
 
