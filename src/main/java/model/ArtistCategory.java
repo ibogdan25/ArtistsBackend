@@ -18,14 +18,10 @@ public class ArtistCategory {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
-    private String description;
-
     public ArtistCategory() {
     }
 
     public ArtistCategory(String name, String description) {
         this.name = name;
-        this.description = description;
     }
 }
