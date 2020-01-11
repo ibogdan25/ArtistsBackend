@@ -19,5 +19,8 @@
         <mapping class="model.Artist" />
         <mapping class="model.ArtistCategory"/>
         <mapping class="model.ArtistSubcategory"/>
+        <mapping class="model.Address"/>
+        <mapping class="model.ContactInfo"/>
+
     </session-factory>
 </hibernate-configuration>
