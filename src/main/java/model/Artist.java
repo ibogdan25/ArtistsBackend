@@ -30,5 +30,6 @@ public class Artist {
 
     @OneToOne
     @JoinColumn(name="id_artist_subcategory", nullable = false)
+    @JsonManagedReference
     private ArtistSubcategory artistSubcategory;
 }

@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,7 @@ public class ArtistCategory {
     private String description;
 
     @OneToMany(mappedBy = "artistCategory")
+    @JsonBackReference
     private Set<ArtistSubcategory> artistSubcategorySet;
 
     public ArtistCategory() {
