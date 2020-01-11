@@ -34,18 +34,20 @@ public class ImageController {
     private final FilesManager filesManager = new FilesManager();
 
     @PostMapping("/static/files/upload")
-    public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("info") FileUploadPOJO info, @RequestHeader(name="Authorization") String token) {
+    public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file,
+                                           @RequestParam("info") FileUploadPOJO info,
+                                           @RequestHeader(name="Authorization") String token) {
         Callable<String> task = () -> filesManager.storeFile(info, file);
         Future<String> future = pool.submit(task);
         try {
             final String pathName = future.get();
             if (pathName != null) {
                 if (info.getFileUploadEntity().equals(FileUploadEntity.USER_PROFILE)) {
-                    User user = userService.getUser(info.getId());
+                    User user = userService.getUserById(info.getId());
                     User userSession = sessionService.getSessionByToken(token);
                     if (user != null && userSession != null && user.getUserId() == userSession.getUserId()) {
                         user.setProfileImgSrc(pathName);
-                        userService.save(user);
+                        userService.updateUserInfo(user.getUserId(), user);
                         return new ResponseEntity<>(HttpStatus.OK);
                     } else {
                         return new ResponseEntity(HttpStatus.UNAUTHORIZED);
