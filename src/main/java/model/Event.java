@@ -36,10 +36,12 @@ public class Event {
     @JoinColumn(name="address_id", nullable = false)
     private Address address;
 
+    @Column(name="artists")
+    private String artists;
+
     @ManyToOne
-    @JoinColumn(name="artist_id", nullable = false)
-    @JsonBackReference
-    private Artist artist;
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
 
     @OneToMany(mappedBy = "reviewedEvent")
     @JsonBackReference

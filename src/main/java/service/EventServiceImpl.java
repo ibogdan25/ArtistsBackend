@@ -7,7 +7,6 @@ import repository.AddressRepository;
 import repository.EventRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,6 @@ import java.util.Optional;
 public class EventServiceImpl implements EventService {
     private EventRepository eventRepository;
     private AddressRepository addressRepository;
-
 
     @Autowired
     public EventServiceImpl(EventRepository eventRepository,AddressRepository addressRepository) {
@@ -34,7 +32,8 @@ public class EventServiceImpl implements EventService {
         entity.setTitle(pojo.getTitle());
         entity.setDescription(pojo.getDescription());
         entity.setAddress(address);
-
+        entity.setArtists(pojo.getArtists());
+        entity.setUser(pojo.getUser());
 
         return this.eventRepository.save(entity).getEventId();
     }
@@ -67,46 +66,25 @@ public class EventServiceImpl implements EventService {
         event.setTitle(pojo.getTitle());
         event.setDescription(pojo.getDescription());
         event.setAddress(address);
+        event.setArtists(pojo.getArtists());
+
         this.eventRepository.save(event);
     }
 
     @Override
-    public EventPOJO findById(long id) {
-        Event event = this.eventRepository.findById(id)
+    public Event findById(long id) {
+        return this.eventRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Event with id "+id+" has not been found."));
-
-        EventPOJO pojo = new EventPOJO();
-
-        pojo.setId(event.getEventId());
-        pojo.setTitle(event.getTitle());
-        pojo.setDescription(event.getDescription());
-//        pojo.setStartTime(event.getStartTime().toString());
-//        pojo.setEndTime(event.getEndTime().toString());
-        pojo.setAddress(event.getAddress());
-        return pojo;
     }
 
     @Override
-    public List<EventPOJO> findAll() {
-
-        List<Event> events = this.eventRepository.findAll();
-
-        List<EventPOJO> pojos = new ArrayList<>();
-
-        events.forEach(x -> {
-            EventPOJO pojo = new EventPOJO();
-            pojo.setId(x.getEventId());
-            pojo.setDescription(x.getDescription());
-            pojo.setAddress(x.getAddress());
-            pojos.add(pojo);
-        });
-
-        return pojos;
+    public List<Event> findAll() {
+        return this.eventRepository.findAll();
     }
 
     @Override
     public Iterable<EventReview> findAllReviewsByEventId(Long id) {
-        Optional<Event> event = eventRepository.findByEventId(id);
+        Optional<Event> event = eventRepository.findById(id);
         if(event.isPresent())
             return event.get().getReviews();
         return null;
@@ -114,7 +92,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Iterable<EventPost> findAllPostsByEventId(Long id) {
-        Optional<Event> event = eventRepository.findByEventId(id);
+        Optional<Event> event = eventRepository.findById(id);
         if(event.isPresent())
             return event.get().getPosts();
         return null;
