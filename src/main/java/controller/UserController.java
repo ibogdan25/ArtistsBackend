@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:*")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private SessionServiceImpl sessionService;

@@ -14,6 +14,7 @@ import service.UserServiceImpl;
 import java.io.IOException;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class ArtistController {
 
     @Autowired

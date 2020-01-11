@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class OrganizerController {
     Logger log = Logger.getLogger(OrganizerPOJO.class.getName());
 
