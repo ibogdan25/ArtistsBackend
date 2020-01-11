@@ -44,4 +44,22 @@ public class Artist {
     @JoinColumn(name="id_artist_subcategory", nullable = false)
     @JsonManagedReference
     private ArtistSubcategory artistSubcategory;
+
+
+    @OneToOne
+    @JoinColumn(name="id_artist_category", nullable = false)
+    @JsonManagedReference
+    private ArtistCategory artistcategory;
+
+    @Column(name = "educations")
+    private String education;
+
+    @Column(name = "awards")
+    private String awards;
+
+    @Column(name = "past_events")
+    private String pastEvents;
+
+    @Column(name = "highlighted_work")
+    private String highlightedWord;
 }
