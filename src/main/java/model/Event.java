@@ -30,9 +30,8 @@ public class Event {
     @Column(name = "url_poster")
     private String urlPoster;
 
-    //TODO location
-    // @ManyToOne
-    // @JoinColumn(name="address_id", nullable = false)
-    // private Address address;
+    @ManyToOne
+    @JoinColumn(name="address_id", nullable = false)
+    private Address address;
 
 }
