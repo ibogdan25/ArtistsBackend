@@ -12,7 +12,7 @@ public class Organizer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "organizer_id")
-    private long organizerId;
+    private Long organizerId;
 
     @Column(name = "name")
     private String name;

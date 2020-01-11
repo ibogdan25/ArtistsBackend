@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
-
+@org.springframework.stereotype.Repository
 public interface ArtistCategoryRepository extends JpaRepository<ArtistCategory, Long> {
     Optional<ArtistCategory> findFirstByName(@Param("name") final String name);
+
 }
