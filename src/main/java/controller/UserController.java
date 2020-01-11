@@ -5,10 +5,7 @@ import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import service.SessionServiceImpl;
 import service.UserServiceImpl;
 
@@ -16,6 +13,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:*")
 public class UserController {
     @Autowired
     private SessionServiceImpl sessionService;
@@ -40,7 +38,7 @@ public class UserController {
         }
         final Session session = sessionService.createSession(user);
         if (session != null) {
-            return new ResponseEntity(session.getSessionToken(), HttpStatus.OK);
+            return new ResponseEntity(new SessionPOJO(session.getSessionToken()), HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -56,18 +54,18 @@ public class UserController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         if (!userRegisterPOJO.getPassword().equals(userRegisterPOJO.getRepeatPassword())) {
-            return new ResponseEntity("Passowrd and repeatPassword must match.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ErrorPOJO("Passowrd and repeatPassword must match."), HttpStatus.BAD_REQUEST);
         }
         RegisterState registerState = userService.registerUser(userRegisterPOJO.getUsername(), userRegisterPOJO.getPassword(), userRegisterPOJO.getEmail());
         switch (registerState) {
             case EMAIL_DUPLICATE:
-                return new ResponseEntity("Email exists.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ErrorPOJO("Email exists."), HttpStatus.BAD_REQUEST);
             case USERNAME_DUPLICATE:
-                return new ResponseEntity("Username exists.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ErrorPOJO("Username exists."), HttpStatus.BAD_REQUEST);
             case PASSOWRD_WEAK:
-                return new ResponseEntity("Password weak.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ErrorPOJO("Password weak."), HttpStatus.BAD_REQUEST);
             case REGISTERED:
-                return new ResponseEntity("User registered.", HttpStatus.OK);
+                return new ResponseEntity(new ErrorPOJO("User registered."), HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }

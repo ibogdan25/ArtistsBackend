@@ -12,7 +12,7 @@ public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "artist_id")
-    private long artistId;
+    private Long artistId;
 
     @Column(name = "name")
     private String name;
@@ -25,7 +25,6 @@ public class Artist {
     private User user;
 
     @OneToOne
-    @JoinColumn(name="id_artist_category", nullable = false)
-    private ArtistCategory artistCategory;
-
+    @JoinColumn(name="id_artist_subcategory", nullable = false)
+    private ArtistSubcategory artistSubcategory;
 }

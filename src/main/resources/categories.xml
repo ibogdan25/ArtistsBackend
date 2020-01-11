@@ -1,0 +1,34 @@
+
+<categories>
+    <category name="Visual arts">
+        <subcategories>
+            <subcategory>Handmade crafting</subcategory>
+            <subcategory>Drawing</subcategory>
+            <subcategory>Painting</subcategory>
+            <subcategory>Photography</subcategory>
+            <subcategory>Sculpture</subcategory>
+            <subcategory>Tattoos</subcategory>
+        </subcategories>
+    </category>
+    <category name="Literary arts">
+        <subcategories>
+            <subcategory>Drama</subcategory>
+            <subcategory>Screenwriting</subcategory>
+            <subcategory>Prose</subcategory>
+            <subcategory>Poetry</subcategory>
+        </subcategories>
+    </category>
+    <category name="Performing arts">
+        <subcategories>
+            <subcategory>Dancers</subcategory>
+            <subcategory>Singers</subcategory>
+            <subcategory>Actors</subcategory>
+            <subcategory>Musician</subcategory>
+            <subcategory>Composers</subcategory>
+            <subcategory>Music bands</subcategory>
+            <subcategory>Dance groups</subcategory>
+            <subcategory>Acting groups</subcategory>
+        </subcategories>
+    </category>
+    <category name="Other"/>
+</categories>
