@@ -37,5 +37,5 @@ public class EventReview {
     @ManyToOne
     @JoinColumn(name="event_id", nullable = false)
     @JsonManagedReference
-    private Event eventReview;
+    private Event reviewedEvent;
 }

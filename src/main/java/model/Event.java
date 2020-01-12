@@ -41,7 +41,7 @@ public class Event {
     @JsonBackReference
     private Artist artist;
 
-    @OneToMany(mappedBy = "eventReview")
+    @OneToMany(mappedBy = "reviewedEvent")
     @JsonBackReference
     private Set<EventReview> reviews;
 
