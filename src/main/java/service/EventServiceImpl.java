@@ -1,6 +1,5 @@
 package service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Address;
 import model.Event;
 import model.EventPOJO;
@@ -9,23 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.AddressRepository;
 import repository.EventRepository;
-import repository.EventReviewRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventServiceImpl implements EventService {
     private EventRepository eventRepository;
     private AddressRepository addressRepository;
-    private EventReviewRepository eventReviewRepository;
+
 
     @Autowired
-    public EventServiceImpl(EventRepository eventRepository,EventReviewRepository eventReviewRepository,AddressRepository addressRepository) {
+    public EventServiceImpl(EventRepository eventRepository,AddressRepository addressRepository) {
         this.eventRepository = eventRepository;
         this.addressRepository = addressRepository;
-        this.eventReviewRepository = eventReviewRepository;
     }
 
     @Override
@@ -111,6 +109,9 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Iterable<EventReview> findAllReviewsByEventId(Long id) {
-        return eventReviewRepository.findAllByReviewsByEventId(id);
+        Optional<Event> event = eventRepository.findByEventId(id);
+        if(event.isPresent())
+            return event.get().getReviews();
+        return null;
     }
 }
