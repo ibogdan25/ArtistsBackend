@@ -72,7 +72,8 @@ public class    Artist {
     @JsonBackReference
     private Set<ArtistReview> reviews;
 
-    @OneToMany(mappedBy = "artistPost")
+    @OneToMany(mappedBy = "byArtist")
     @JsonBackReference
     private Set<ArtistPost> posts;
+
 }
