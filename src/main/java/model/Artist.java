@@ -64,7 +64,7 @@ public class Artist {
     @Column(name = "highlighted_work")
     private String highlightedWord;
 
-    @OneToMany(mappedBy = "artistReview")
+    @OneToMany(mappedBy = "reviewedArtist")
     @JsonBackReference
     private Set<ArtistReview> reviews;
 

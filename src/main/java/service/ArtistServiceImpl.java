@@ -1,18 +1,22 @@
 package service;
 
 import model.Artist;
+import model.ArtistReview;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.ArtistRepository;
+import repository.ArtistReviewRepository;
 
 @Service
 public class ArtistServiceImpl implements ArtistService{
     private ArtistRepository artistRepository;
+    private ArtistReviewRepository artistReviewRepository;
 
     @Autowired
-    public ArtistServiceImpl(ArtistRepository artistRepository) {
+    public ArtistServiceImpl(ArtistRepository artistRepository, ArtistReviewRepository artistReviewRepository) {
         this.artistRepository = artistRepository;
+        this.artistReviewRepository =artistReviewRepository;
     }
 
     @Override
@@ -46,5 +50,11 @@ public class ArtistServiceImpl implements ArtistService{
     public Artist saveArtist(Artist artist) {
         return artistRepository.save(artist);
     }
+
+    @Override
+    public Iterable<ArtistReview> findAllReviewsByArtistId(Long id) {
+        return artistReviewRepository.findAllReviewsByArtistId(id);
+    }
+
 
 }

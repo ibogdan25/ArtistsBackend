@@ -37,5 +37,5 @@ public class ArtistReview {
     @ManyToOne
     @JoinColumn(name="artist_id", nullable = false)
     @JsonManagedReference
-    private Artist artistReview;
+    private Artist reviewedArtist;
 }

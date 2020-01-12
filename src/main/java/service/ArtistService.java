@@ -1,6 +1,7 @@
 package service;
 
 import model.Artist;
+import model.ArtistReview;
 import model.User;
 
 public interface ArtistService {
@@ -10,4 +11,5 @@ public interface ArtistService {
     Iterable<Artist> getBySubcategory(Long subcategoryId);
     Iterable<Artist> getById(Long id);
     Artist saveArtist(Artist artist);
+    Iterable<ArtistReview> findAllReviewsByArtistId(Long id);
 }
