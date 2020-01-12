@@ -89,7 +89,7 @@ public class EventController {
         return this.eventService.findAll();
     }
 
-    @GetMapping("/events/{id}/reviews")
+    @GetMapping("/event/{id}/reviews")
     @ResponseBody
     public Iterable<EventReview> getAllReviewsByEventId(@PathVariable String id) {
         return eventService.findAllReviewsByEventId(Long.parseLong(id));
