@@ -1,9 +1,6 @@
 package service;
 
-import model.Address;
-import model.Event;
-import model.EventPOJO;
-import model.EventReview;
+import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.AddressRepository;
@@ -114,4 +111,14 @@ public class EventServiceImpl implements EventService {
             return event.get().getReviews();
         return null;
     }
+
+    @Override
+    public Iterable<EventPost> findAllPostsByEventId(Long id) {
+        Optional<Event> event = eventRepository.findByEventId(id);
+        if(event.isPresent())
+            return event.get().getPosts();
+        return null;
+    }
+
+
 }

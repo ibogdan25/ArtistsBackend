@@ -45,4 +45,8 @@ public class Event {
     @JsonBackReference
     private Set<EventReview> reviews;
 
+    @OneToMany(mappedBy = "byEvent")
+    @JsonBackReference
+    private Set<EventPost> posts;
+
 }

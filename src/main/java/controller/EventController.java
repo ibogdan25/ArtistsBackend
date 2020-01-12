@@ -2,10 +2,7 @@ package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
-import model.Artist;
-import model.Event;
-import model.EventPOJO;
-import model.EventReview;
+import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,5 +91,12 @@ public class EventController {
     public Iterable<EventReview> getAllReviewsByEventId(@PathVariable String id) {
         return eventService.findAllReviewsByEventId(Long.parseLong(id));
     }
+
+    @GetMapping("/event/{id}/posts")
+    @ResponseBody
+    public Iterable<EventPost> getAllPostsByEventId(@PathVariable String id) {
+        return eventService.findAllPostsByEventId(Long.parseLong(id));
+    }
+
 
 }
