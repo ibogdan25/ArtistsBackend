@@ -1,9 +1,12 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "artists")
@@ -60,4 +63,12 @@ public class Artist {
 
     @Column(name = "highlighted_work")
     private String highlightedWord;
+
+    @OneToMany(mappedBy = "artistReview")
+    @JsonBackReference
+    private Set<ArtistReview> reviews;
+
+    @OneToMany(mappedBy = "artistPost")
+    @JsonBackReference
+    private Set<ArtistPost> posts;
 }
