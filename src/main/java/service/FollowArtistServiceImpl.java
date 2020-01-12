@@ -9,6 +9,7 @@ import repository.ArtistRepository;
 import repository.FollowArtistRepository;
 import repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,8 +28,8 @@ public class FollowArtistServiceImpl {
 
     /**
      * add FollowArtist into table
-     * @param userId
-     * @param artistId
+     * @param userId user
+     * @param artistId artist
      * @return true if was added
      *          false if already was added in database before
      */
@@ -48,6 +49,12 @@ public class FollowArtistServiceImpl {
 
     public List<Artist> getAllFollowedArtists(User user) {
 
-        return followArtistRepository.findAllByUser(user);
+        List<Artist> artists = new ArrayList<>();
+
+        followArtistRepository.findAllByUser(user).forEach(x->
+                artists.add(x.getArtist())
+        );
+
+        return artists;
     }
 }
