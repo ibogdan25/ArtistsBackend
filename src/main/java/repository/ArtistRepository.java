@@ -3,7 +3,6 @@ package repository;
 import model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
@@ -18,6 +17,8 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     @Query("SELECT a from Artist a where a.artistSubcategory.idArtistSubcategory = :subcategory_id ")
     Iterable<Artist> findByArtistSubcategory(@Param("subcategory_id")final Long subcategoryId);
 
-    Iterable<Artist> findAllByArtistId(Long id);
+    Optional<Artist> findById(Long id);
+
+
 
 }
