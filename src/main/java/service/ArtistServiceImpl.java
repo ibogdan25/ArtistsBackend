@@ -6,17 +6,15 @@ import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.ArtistRepository;
-import repository.ArtistReviewRepository;
+import java.util.Optional;
 
 @Service
 public class ArtistServiceImpl implements ArtistService{
     private ArtistRepository artistRepository;
-    private ArtistReviewRepository artistReviewRepository;
 
     @Autowired
-    public ArtistServiceImpl(ArtistRepository artistRepository, ArtistReviewRepository artistReviewRepository) {
+    public ArtistServiceImpl(ArtistRepository artistRepository) {
         this.artistRepository = artistRepository;
-        this.artistReviewRepository =artistReviewRepository;
     }
 
     @Override
@@ -53,8 +51,10 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public Iterable<ArtistReview> findAllReviewsByArtistId(Long id) {
-        return artistReviewRepository.findAllReviewsByArtistId(id);
+        Optional<Artist> artist = artistRepository.findById(id);
+        if(artist.isPresent())
+            return artist.get().getReviews();
+        return null;
     }
-
 
 }
