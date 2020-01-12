@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
+import javax.persistence.*;
+import java.util.Set;
+import javax.validation.constraints.NotEmpty;
 
 
 @Entity
@@ -66,4 +67,12 @@ public class    Artist {
 
     @Column(name = "highlighted_work")
     private String highlightedWord;
+
+    @OneToMany(mappedBy = "reviewedArtist")
+    @JsonBackReference
+    private Set<ArtistReview> reviews;
+
+    @OneToMany(mappedBy = "artistPost")
+    @JsonBackReference
+    private Set<ArtistPost> posts;
 }

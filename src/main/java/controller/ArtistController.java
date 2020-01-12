@@ -2,6 +2,7 @@ package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Artist;
+import model.ArtistReview;
 import model.User;
 import model.UserPOJO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,12 @@ public class ArtistController {
         return artistService.getById(Long.parseLong(id));
     }
 
+    @GetMapping("/artists/{id}/reviews")
+    @ResponseBody
+    public Iterable<ArtistReview> getAllReviewsByArtistId(@PathVariable String id){
+        return artistService.findAllReviewsByArtistId(Long.parseLong(id));
+    }
+  
     @RequestMapping(value = "/artists", method = RequestMethod.POST)
     public ResponseEntity saveArtist(@RequestBody String json){
         System.out.println("save Artist");
@@ -87,6 +94,7 @@ public class ArtistController {
         }
         artistService.save(artist);
         return new ResponseEntity(HttpStatus.OK);
+
     }
 
 }
