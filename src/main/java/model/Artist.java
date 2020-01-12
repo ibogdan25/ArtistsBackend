@@ -6,6 +6,7 @@ package model;
         import lombok.Getter;
         import lombok.Setter;
         import javax.persistence.*;
+        import java.util.Set;
 
 @Entity
 @Table(name = "artists")
@@ -50,6 +51,10 @@ public class Artist {
     @JoinColumn(name="id_artist_category", nullable = false)
     @JsonManagedReference
     private ArtistCategory artistcategory;
+
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    private Set<FollowArtist> followArtists;
 
     @Column(name = "educations")
     private String education;

@@ -35,6 +35,10 @@ public class User {
     @JsonBackReference
     private Set<Artist> artists;
 
+    @OneToMany(targetEntity = FollowArtist.class,mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Set<FollowArtist> artistFollows;
+
     public User(String username, String password, Set<Artist> artists) {
         this.username = username;
         this.password = password;
