@@ -1,10 +1,12 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -33,5 +35,14 @@ public class Event {
     @ManyToOne
     @JoinColumn(name="address_id", nullable = false)
     private Address address;
+
+    @ManyToOne
+    @JoinColumn(name="artist_id", nullable = false)
+    @JsonBackReference
+    private Artist artist;
+
+    @OneToMany(mappedBy = "reviewedEvent")
+    @JsonBackReference
+    private Set<EventReview> reviews;
 
 }
