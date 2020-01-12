@@ -28,13 +28,12 @@ public class EventPost {
     @Column(name = "images")
     private String images;
 
-
     @Column(name="date")
     private LocalDateTime date = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name="artist_id", nullable = false)
+    @JoinColumn(name="event_id", nullable = false)
     @JsonManagedReference
-    private Artist artist;
+    private Event byEvent;
 
 }
