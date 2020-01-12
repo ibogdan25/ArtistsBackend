@@ -21,6 +21,8 @@
         <mapping class="model.ArtistSubcategory"/>
         <mapping class="model.Address"/>
         <mapping class="model.ContactInfo"/>
+        <mapping class="model.ArtistPost"/>
+        <mapping class="model.ArtistReview"/>
 
     </session-factory>
 </hibernate-configuration>

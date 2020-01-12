@@ -31,6 +31,10 @@ public class User {
     @JsonBackReference
     private Set<Artist> artists;
 
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    private Set<ArtistReview> artistReviews;
+
     public User(String username, String password, Set<Artist> artists) {
         this.username = username;
         this.password = password;
