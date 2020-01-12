@@ -1,10 +1,7 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.Artist;
-import model.ArtistReview;
-import model.User;
-import model.UserPOJO;
+import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +92,12 @@ public class ArtistController {
         artistService.save(artist);
         return new ResponseEntity(HttpStatus.OK);
 
+    }
+
+    @GetMapping("/artists/{id}/posts")
+    @ResponseBody
+    public Iterable<ArtistPost> getAllPostsByArtistId(@PathVariable String id){
+        return artistService.findAllPostsByArtistId(Long.parseLong(id));
     }
 
 }

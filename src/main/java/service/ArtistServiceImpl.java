@@ -1,6 +1,7 @@
 package service;
 
 import model.Artist;
+import model.ArtistPost;
 import model.ArtistReview;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,4 +66,11 @@ public class ArtistServiceImpl implements ArtistService{
         return null;
     }
 
+    @Override
+    public Iterable<ArtistPost> findAllPostsByArtistId(Long id) {
+        Optional<Artist> artist = artistRepository.findById(id);
+        if(artist.isPresent())
+            return artist.get().getPosts();
+        return null;
+    }
 }
