@@ -14,8 +14,6 @@ import service.ArtistService;
 import service.FilesManager;
 import service.SessionServiceImpl;
 import service.UserServiceImpl;
-
-import javax.security.auth.callback.Callback;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -66,10 +64,10 @@ public class ImageController {
 
                 if (info.getFileUploadEntity().equals(FileUploadEntity.ARTIST_COVER)){
                     try {
-                        Iterable<Artist> foundArtist = artistService.getById(info.getId());
-                        Artist artist = foundArtist.iterator().next();
+                        Artist artist = artistService.getById(info.getId());
                         artist.setCoverUrl(pathName);
-                        artistService.saveArtist(artist);
+                        if (artistService.save(artist)== null)
+                            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
                         return new ResponseEntity(HttpStatus.OK);
                     } catch (Exception e){
                         return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -78,10 +76,10 @@ public class ImageController {
 
                 if (info.getFileUploadEntity().equals(FileUploadEntity.ARTIST_AVATAR)){
                     try {
-                        Iterable<Artist> foundArtist = artistService.getById(info.getId());
-                        Artist artist = foundArtist.iterator().next();
+                        Artist artist = artistService.getById(info.getId());
                         artist.setAvatarUrl(pathName);
-                        artistService.saveArtist(artist);
+                        if (artistService.save(artist)== null)
+                            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
                         return new ResponseEntity(HttpStatus.OK);
                     } catch (Exception e){
                         return new ResponseEntity(HttpStatus.BAD_REQUEST);

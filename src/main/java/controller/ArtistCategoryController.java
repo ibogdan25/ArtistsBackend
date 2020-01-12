@@ -1,18 +1,11 @@
 package controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.ArtistCategory;
 import model.ArtistCategoryPOJO;
 import model.ArtistSubcategory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.ArtistCategoriesServiceImpl;
-import service.ArtistCategoryService;
-
-import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -37,8 +30,4 @@ public class ArtistCategoryController {
         return this.artistCategoriesService.findAllSubcategoriesById(id);
     }
 
-   /* @RequestMapping(value="/artistCategory/{name}",method = RequestMethod.GET)
-    public Set<ArtistSubcategory> getAllArtistSubcategories(@PathVariable("name") String name) {
-        return this.artistCategoriesService.findAllSubcategories(name);
-    }*/
 }

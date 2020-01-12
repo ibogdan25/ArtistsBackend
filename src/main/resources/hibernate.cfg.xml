@@ -22,5 +22,10 @@
         <mapping class="model.Address"/>
         <mapping class="model.ContactInfo"/>
         <mapping class="model.FollowArtist"/>
+        <mapping class="model.ArtistPost"/>
+        <mapping class="model.ArtistReview"/>
+        <mapping class="model.EventPost"/>
+        <mapping class="model.EventReview"/>
+
     </session-factory>
 </hibernate-configuration>

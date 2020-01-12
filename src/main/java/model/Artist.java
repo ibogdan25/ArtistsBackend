@@ -1,22 +1,27 @@
 package model;
 
-        import com.fasterxml.jackson.annotation.JsonBackReference;
-        import com.fasterxml.jackson.annotation.JsonIgnore;
-        import com.fasterxml.jackson.annotation.JsonManagedReference;
-        import lombok.Getter;
-        import lombok.Setter;
-        import javax.persistence.*;
-        import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Set;
+import javax.validation.constraints.NotEmpty;
+
 
 @Entity
 @Table(name = "artists")
 @Getter @Setter
-public class Artist {
+public class    Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "artist_id")
     private Long artistId;
 
+    @NotEmpty(message = "Name field in mandatory")
     @Column(name = "name")
     private String name;
 
@@ -67,4 +72,13 @@ public class Artist {
 
     @Column(name = "highlighted_work")
     private String highlightedWord;
+
+    @OneToMany(mappedBy = "reviewedArtist")
+    @JsonBackReference
+    private Set<ArtistReview> reviews;
+
+    @OneToMany(mappedBy = "byArtist")
+    @JsonBackReference
+    private Set<ArtistPost> posts;
+
 }

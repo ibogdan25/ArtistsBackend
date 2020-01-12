@@ -1,13 +1,9 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
-
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -35,9 +31,19 @@ public class User {
     @JsonBackReference
     private Set<Artist> artists;
 
+
     @OneToMany(targetEntity = FollowArtist.class,mappedBy = "user",fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<FollowArtist> artistFollows;
+
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    private Set<ArtistReview> artistReviews;
+
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    private Set<EventReview> eventReviews;
+
 
     public User(String username, String password, Set<Artist> artists) {
         this.username = username;
