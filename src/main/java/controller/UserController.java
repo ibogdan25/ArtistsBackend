@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.FollowArtistServiceImpl;
+import service.FollowArtistEventServiceImpl;
 import service.SessionServiceImpl;
 import service.UserServiceImpl;
 import java.io.IOException;
@@ -22,13 +22,12 @@ public class UserController {
     private UserServiceImpl userService;
 
     @Autowired
-    private final FollowArtistServiceImpl followArtistService;
+    private FollowArtistEventServiceImpl followArtistEventService;
+
 
     Logger log = Logger.getLogger(UserController.class.getName());
 
-    public UserController(FollowArtistServiceImpl followArtistService) {
-        this.followArtistService = followArtistService;
-    }
+
 
 
     @RequestMapping(value="/followArtistUser",method = RequestMethod.POST)
@@ -38,7 +37,21 @@ public class UserController {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
-        if(!followArtistService.addFollowArtistUser(user.getUserId().toString(), artistId))
+        if(!followArtistEventService.addFollowArtistUser(user.getUserId().toString(), artistId))
+            return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value="/followEventUser",method = RequestMethod.POST)
+    public ResponseEntity<?> addFollowEventUser(@RequestHeader(name = "Authorization") String token, @RequestParam("eventId") String eventId) {
+        User user = sessionService.getSessionByToken(token);
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
+        if(!followArtistEventService.addFollowEventUser(user.getUserId().toString(), eventId))
             return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -52,8 +65,20 @@ public class UserController {
             return null;
         }
 
-        return followArtistService.getAllFollowedArtists(user);
+        return followArtistEventService.getAllFollowedArtists(user);
     }
+
+    @RequestMapping(value="/followEventUser/allFollowedEvents",method = RequestMethod.GET)
+    public List<Event> getAllFollowedEvents(@RequestHeader(name="Authorization") String token){
+        User user = sessionService.getSessionByToken(token);
+        if(user == null){
+            return null;
+        }
+
+
+        return followArtistEventService.getAllFollowedEvents(user);
+    }
+
 
     @RequestMapping(value = "/user/connect", method = RequestMethod.POST)
     public ResponseEntity connect(@RequestBody String json) {

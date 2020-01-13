@@ -1,28 +1,28 @@
 package service;
 
-import model.Artist;
-import model.FollowArtist;
-import model.User;
+import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.ArtistRepository;
-import repository.FollowArtistRepository;
-import repository.UserRepository;
+import repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class FollowArtistServiceImpl {
+public class FollowArtistEventServiceImpl {
     private final FollowArtistRepository followArtistRepository;
+    private final FollowEventRepository followEventRepository;
     private final ArtistRepository artistRepository;
     private final UserRepository userRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
-    public FollowArtistServiceImpl(FollowArtistRepository followArtistRepository, ArtistRepository artistRepository, UserRepository userRepository) {
+    public FollowArtistEventServiceImpl(FollowArtistRepository followArtistRepository, FollowEventRepository followEventRepository, ArtistRepository artistRepository, UserRepository userRepository, EventRepository eventRepository) {
         this.followArtistRepository = followArtistRepository;
+        this.followEventRepository = followEventRepository;
         this.artistRepository = artistRepository;
         this.userRepository = userRepository;
+        this.eventRepository = eventRepository;
     }
 
 
@@ -40,6 +40,9 @@ public class FollowArtistServiceImpl {
         followArtist.setArtist(artistRepository.getOne(Long.valueOf(artistId)));
         followArtist.setUser(userRepository.getOne(Long.valueOf(userId)));
 
+        if(!artistRepository.existsById(Long.valueOf(artistId)))
+            return false;
+
         if(followArtistRepository.findFollowArtistByUserAndArtist(followArtist.getUser(),followArtist.getArtist()).iterator().hasNext())
             return false;
 
@@ -47,6 +50,22 @@ public class FollowArtistServiceImpl {
         return true;
     }
 
+    public boolean addFollowEventUser(String userId, String eventId) {
+        FollowEvent followEvent = new FollowEvent();
+
+        followEvent.setEvent(eventRepository.getOne(Long.valueOf(eventId)));
+        followEvent.setUser(userRepository.getOne(Long.valueOf(userId)));
+
+        if(!eventRepository.existsById(Long.valueOf(eventId)))
+            return false;
+
+        if(followEventRepository.findFollowEventByUserAndEvent(followEvent.getUser(),followEvent.getEvent()).iterator().hasNext())
+            return false;
+
+        followEventRepository.save(followEvent);
+        return true;
+
+    }
     public List<Artist> getAllFollowedArtists(User user) {
 
         List<Artist> artists = new ArrayList<>();
@@ -56,5 +75,14 @@ public class FollowArtistServiceImpl {
         );
 
         return artists;
+    }
+
+    public List<Event> getAllFollowedEvents(User user){
+        List<Event> events = new ArrayList<>();
+
+        followEventRepository.findAllByUser(user).forEach(x->
+                events.add(x.getEvent())
+        );
+        return events;
     }
 }

@@ -38,6 +38,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @JsonBackReference
+    private Set<FollowEvent> followEvents;
+
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private Set<ArtistReview> artistReviews;
 
     @OneToMany(mappedBy = "user")
