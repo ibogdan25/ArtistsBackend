@@ -34,7 +34,7 @@ public class ArtistPost {
 
     @ManyToOne
     @JoinColumn(name="artist_id", nullable = false)
-    @JsonManagedReference
+    @JsonManagedReference(value="posts")
     private Artist byArtist;
 
 }
