@@ -1,5 +1,6 @@
 package model;
 
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -55,6 +56,10 @@ public class    Artist {
     @JoinColumn(name="id_artist_category", nullable = false)
     @JsonManagedReference
     private ArtistCategory artistcategory;
+
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    private Set<FollowArtist> followArtists;
 
     @Column(name = "educations")
     private String education;

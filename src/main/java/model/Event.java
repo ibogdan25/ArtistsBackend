@@ -51,4 +51,8 @@ public class Event {
     @JsonBackReference
     private Set<EventPost> posts;
 
+    @OneToMany(mappedBy = "event")
+    @JsonBackReference
+    private Set<FollowEvent> followEvents;
+
 }

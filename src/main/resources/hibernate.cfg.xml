@@ -21,10 +21,13 @@
         <mapping class="model.ArtistSubcategory"/>
         <mapping class="model.Address"/>
         <mapping class="model.ContactInfo"/>
+        <mapping class="model.FollowArtist"/>
         <mapping class="model.ArtistPost"/>
         <mapping class="model.ArtistReview"/>
         <mapping class="model.EventPost"/>
         <mapping class="model.EventReview"/>
+        <mapping class="model.FollowEvent"/>
+        <mapping class="model.Event"/>
 
     </session-factory>
 </hibernate-configuration>
