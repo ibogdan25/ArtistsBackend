@@ -1,17 +1,19 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import model.*;
+import model.ErrorPOJO;
+import model.Event;
+import model.EventPOJO;
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.EventService;
+import service.SessionService;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -21,81 +23,120 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+    @Autowired
+    private SessionService sessionService;
 
     @RequestMapping(value = "/event/add", method = RequestMethod.POST)
-    public ResponseEntity addEvent(@RequestBody String json) throws IOException {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        EventPOJO pojo;
-        try {
-            pojo = objectMapper.readValue(json, EventPOJO.class);
-            long id = this.eventService.add(pojo);
-            log.info("Event with id " + id + " has been created!");
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (IOException e) {
-            log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        } catch (EntityNotFoundException e) {
-            log.warning("BAD_REQUEST: " + e.toString());
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity addEvent(@RequestHeader(name = "Authorization") String token,
+                                   @RequestBody String json) throws IOException {
+        User user = sessionService.getSessionByToken(token);
+        if (user != null) {
+            final ObjectMapper objectMapper = new ObjectMapper();
+            EventPOJO pojo;
+            try {
+                pojo = objectMapper.readValue(json, EventPOJO.class);
+                pojo.setUser(sessionService.getSessionByToken(token));
+                long id = this.eventService.add(pojo);
+                log.info("Event with id " + id + " has been created!");
+                return new ResponseEntity(id, HttpStatus.OK);
+            } catch (IOException e) {
+                log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            } catch (EntityNotFoundException e) {
+                log.warning("BAD_REQUEST: " + e.toString());
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
         }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/event/delete", method = RequestMethod.DELETE)
-    public ResponseEntity deleteEvent(@RequestParam long id) {
-        try {
-            this.eventService.delete(id);
-            log.info("Event with id " + id + " has been deleted!");
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            log.warning("BAD_REQUEST: " + e.toString());
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity deleteEvent(@RequestHeader(name = "Authorization") String token,
+                                      @RequestParam long id) {
+        User user = sessionService.getSessionByToken(token);
+        if (user != null) {
+            try {
+                this.eventService.delete(id);
+                log.info("Event with id " + id + " has been deleted!");
+                return new ResponseEntity(HttpStatus.OK);
+            } catch (IllegalArgumentException e) {
+                log.warning("BAD_REQUEST: " + e.toString());
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
         }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/event/update", method = RequestMethod.PUT)
-    public ResponseEntity updateEvent(@RequestBody String json) {
-        EventPOJO pojo;
-        final ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            pojo = objectMapper.readValue(json, EventPOJO.class);
-            this.eventService.update(pojo);
-            log.info("Event with id " + pojo.getId() + " has been updated!");
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (IOException e) {
-            log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        } catch (EntityNotFoundException e) {
-            log.warning("BAD_REQUEST: " + e.toString());
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity updateEvent(@RequestHeader(name = "Authorization") String token,
+                                      @RequestBody String json) {
+
+        User user = sessionService.getSessionByToken(token);
+        if (user != null) {
+            EventPOJO pojo;
+            final ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                pojo = objectMapper.readValue(json, EventPOJO.class);
+                this.eventService.update(pojo);
+                log.info("Event with id " + pojo.getId() + " has been updated!");
+                return new ResponseEntity(HttpStatus.OK);
+            } catch (IOException e) {
+                log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            } catch (EntityNotFoundException e) {
+                log.warning("BAD_REQUEST: " + e.toString());
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
         }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/event", method = RequestMethod.GET)
-    public EventPOJO getOrganizer(@RequestParam long id) {
-        try {
-            return this.eventService.findById(id);
-        } catch (EntityNotFoundException e) {
-            log.warning("BAD_REQUEST: " + e.toString());
-            return null;
+    public ResponseEntity getEvent(@RequestHeader(name = "Authorization") String token,
+                          @RequestParam long id) {
+        User user = sessionService.getSessionByToken(token);
+        if (user != null) {
+            try {
+                Event event = this.eventService.findById(id);
+                return new ResponseEntity(event, HttpStatus.OK);
+            } catch (EntityNotFoundException e) {
+                log.warning("BAD_REQUEST: " + e.toString());
+                return null;
+            }
         }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
 
     @RequestMapping(value = "/event/all", method = RequestMethod.GET)
-    public List<EventPOJO> getAllOrganizers() {
-        return this.eventService.findAll();
+    public ResponseEntity getAllEvents(@RequestHeader(name = "Authorization") String token) {
+        User user = sessionService.getSessionByToken(token);
+        if (user != null) {
+            return new ResponseEntity(this.eventService.findAll(), HttpStatus.OK);
+        }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/event/{id}/reviews")
     @ResponseBody
-    public Iterable<EventReview> getAllReviewsByEventId(@PathVariable String id) {
-        return eventService.findAllReviewsByEventId(Long.parseLong(id));
+    public ResponseEntity getAllReviewsByEventId(@RequestHeader(name = "Authorization") String token,
+                                                        @PathVariable String id) {
+        User user = sessionService.getSessionByToken(token);
+        if (user != null) {
+            return new ResponseEntity(eventService.findAllReviewsByEventId(Long.parseLong(id)), HttpStatus.OK);
+        }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/event/{id}/posts")
     @ResponseBody
-    public Iterable<EventPost> getAllPostsByEventId(@PathVariable String id) {
-        return eventService.findAllPostsByEventId(Long.parseLong(id));
+    public ResponseEntity getAllPostsByEventId(@RequestHeader(name = "Authorization") String token,
+                                                    @PathVariable String id) {
+        User user = sessionService.getSessionByToken(token);
+        if (user != null) {
+            return new ResponseEntity(eventService.findAllPostsByEventId(Long.parseLong(id)), HttpStatus.OK);
+        }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
 
