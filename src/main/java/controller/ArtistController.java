@@ -7,8 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.ArtistService;
+import service.SessionService;
 import service.UserServiceImpl;
+
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -18,6 +22,9 @@ public class ArtistController {
     ArtistService artistService;
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private SessionService sessionService;
+    Logger log = Logger.getLogger(ArtistPOJO.class.getName());
     @RequestMapping("/")
     public String index() {
         return "Greetings from Spring Boot!";
@@ -32,6 +39,7 @@ public class ArtistController {
         } catch (IOException e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+
         final User user = userService.getUser(userPOJO.getUserOrEmail(), userPOJO.getPassword());
         if (user == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
@@ -52,8 +60,13 @@ public class ArtistController {
 
     @GetMapping("/artists")
     @ResponseBody
-    public Iterable<Artist> getAll() {
-        return artistService.getAll();
+    public ResponseEntity getAll(@RequestHeader(name = "Authorization") String token) {
+        User user = sessionService.getSessionByToken(token);
+        if(user!=null) {
+            return new ResponseEntity(artistService.getAll(), HttpStatus.OK);
+        }
+        log.warning("Invalid token");
+        return new ResponseEntity(new ErrorPOJO("Invalid token"), HttpStatus.UNAUTHORIZED);
     }
     @GetMapping("/artists/subcategory/{subcategory_id}")
     @ResponseBody
@@ -64,8 +77,15 @@ public class ArtistController {
 
     @GetMapping("/artists/id/{id}")
     @ResponseBody
-    public Artist getAllById(@PathVariable String id) {
-        return artistService.getById(Long.parseLong(id));
+    public ResponseEntity getAllById(@RequestHeader(name = "Authorization") String token ,
+                                     @PathVariable String id) {
+        User user = sessionService.getSessionByToken(token);
+        if(user!=null) {
+            Artist artist = artistService.getById(Long.parseLong(id));
+            return new ResponseEntity(artist, HttpStatus.OK);
+        }
+        log.warning("Invalid token");
+        return new ResponseEntity(new ErrorPOJO("Invalid token"), HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/artists/{id}/reviews")
@@ -75,23 +95,37 @@ public class ArtistController {
     }
   
     @RequestMapping(value = "/artists", method = RequestMethod.POST)
-    public ResponseEntity saveArtist(@RequestBody String json){
-        System.out.println("save Artist");
-        final ObjectMapper objectMapper = new ObjectMapper();
-        Artist artist;
-        try {
-            artist = objectMapper.readValue(json, Artist.class);
-        } catch (IOException e) {
-            //log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity saveArtist(@RequestHeader(name = "Authorization") String token,
+                                     @RequestBody String json){
+        User user = sessionService.getSessionByToken(token);
+        if(user!=null) {
+            final ObjectMapper objectMapper = new ObjectMapper();
+            ArtistPOJO artistPOJO = new ArtistPOJO();
+            try {
+                artistPOJO = objectMapper.readValue(json, ArtistPOJO.class);
+                Artist artistEntity = new Artist();
+                artistEntity.setName(artistPOJO.getName());
+                artistEntity.setDescription(artistPOJO.getDescription());
+                artistEntity.setAvatarUrl(artistPOJO.getAvatarUrl());
+                artistEntity.setCoverUrl(artistPOJO.getAvatarUrl());
+                artistEntity.setStars(artistPOJO.getStars());
+                artistEntity.setEducation(artistPOJO.getEducation());
+                artistEntity.setAwards(artistPOJO.getAwards());
+                artistEntity.setPastEvents(artistPOJO.getPastEvents());
+                artistEntity.setHighlightedWork(artistPOJO.getHighlightedWork());
+                artistEntity.setContactInfo(artistPOJO.getContactInfo());
+                artistEntity.setUser(artistPOJO.getUser());
+                artistEntity.setArtistSubcategory(artistPOJO.getArtistSubcategory());
+                Artist artist = artistService.save(artistEntity);
+                log.info("Artist with id " + artist.getId() + " was successfully addded");
+                return new ResponseEntity(artist.getId(), HttpStatus.OK);
+            } catch (IOException | EntityNotFoundException e) {
+                log.warning("Bad request. Error: " + e.toString());
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
         }
-        final Artist artistFromDb = artistService.getById(artist.getArtistId());
-        if (artistFromDb == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        artistService.save(artist);
-        return new ResponseEntity(HttpStatus.OK);
-
+        log.warning("Invalid token");
+        return new ResponseEntity(new ErrorPOJO("Invalid token"), HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/artists/{id}/posts")
