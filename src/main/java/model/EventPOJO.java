@@ -27,4 +27,10 @@ public class EventPOJO {
 
     @Getter @Setter
     private Address address;
+
+    @Getter @Setter
+    private String artists;
+
+    @Getter @Setter
+    private User user;
 }

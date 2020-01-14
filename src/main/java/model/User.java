@@ -32,6 +32,15 @@ public class User {
     @JsonManagedReference
     private Set<Artist> artists;
 
+
+    @OneToMany(targetEntity = FollowArtist.class,mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Set<FollowArtist> artistFollows;
+
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    private Set<FollowEvent> followEvents;
+
     @OneToMany(mappedBy = "user")
     @JsonBackReference
     private Set<ArtistReview> artistReviews;
@@ -39,6 +48,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonBackReference
     private Set<EventReview> eventReviews;
+
 
     public User(String username, String password, Set<Artist> artists) {
         this.username = username;
