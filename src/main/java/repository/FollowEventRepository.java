@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface FollowEventRepository extends JpaRepository<FollowEvent,Long> {
 
     @Query("SELECT f from FollowEvent f where f.user = :user and f.event= :event")
@@ -15,4 +17,7 @@ public interface FollowEventRepository extends JpaRepository<FollowEvent,Long> {
 
     @Query("SELECT f from FollowEvent f where f.user = :user ")
     Iterable<FollowEvent> findAllByUser(@Param("user") final User user);
+
+    Optional<FollowEvent> findFirstByUserAndEvent(@Param("user")final User user,@Param("event")final Event event);
+
 }

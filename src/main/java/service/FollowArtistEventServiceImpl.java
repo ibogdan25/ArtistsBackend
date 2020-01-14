@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.*;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FollowArtistEventServiceImpl {
@@ -50,6 +52,21 @@ public class FollowArtistEventServiceImpl {
         return true;
     }
 
+    public boolean unfollowArtistUser(String userId, String artistId) {
+        FollowArtist followArtist = new FollowArtist();
+
+        followArtist.setUser(userRepository.getOne(Long.valueOf(userId)));
+        followArtist.setArtist(artistRepository.getOne(Long.valueOf(artistId)));
+
+        Optional<FollowArtist> followArtist1 = followArtistRepository.findFirstByUserAndArtist(followArtist.getUser(),followArtist.getArtist());
+        if(!followArtist1.isPresent())
+            return false;
+
+        followArtist.setFollowArtist(followArtist1.get().getFollowArtist());
+        followArtistRepository.delete(followArtist);
+        return true;
+    }
+
     public boolean addFollowEventUser(String userId, String eventId) {
         FollowEvent followEvent = new FollowEvent();
 
@@ -65,6 +82,20 @@ public class FollowArtistEventServiceImpl {
         followEventRepository.save(followEvent);
         return true;
 
+    }
+    public boolean unfollowEventUser(String userId, String eventId){
+        FollowEvent followEvent = new FollowEvent();
+
+        followEvent.setEvent(eventRepository.getOne(Long.valueOf(eventId)));
+        followEvent.setUser(userRepository.getOne(Long.valueOf(userId)));
+
+        Optional<FollowEvent> followEvent1 = followEventRepository.findFirstByUserAndEvent(followEvent.getUser(),followEvent.getEvent());
+        if(!followEvent1.isPresent())
+            return false;
+
+        followEvent.setFollowEvent(followEvent1.get().getFollowEvent());
+        followEventRepository.delete(followEvent);
+        return true;
     }
     public List<Artist> getAllFollowedArtists(User user) {
 
@@ -84,5 +115,25 @@ public class FollowArtistEventServiceImpl {
                 events.add(x.getEvent())
         );
         return events;
+    }
+
+    public boolean followsEvent(User user, String eventId) {
+        Optional<Event> event = eventRepository.findByEventId(Long.valueOf(eventId));
+
+        if(!event.isPresent())
+            return false;
+
+        Optional<FollowEvent> followEvent = followEventRepository.findFirstByUserAndEvent(user,event.get());
+
+        return followEvent.isPresent();
+    }
+
+    public boolean followsArtist(User user, String artistId) {
+        Optional<Artist> artist  = artistRepository.findById(Long.valueOf(artistId));
+        if(!artist.isPresent())
+            return false;
+        Optional<FollowArtist> followArtist = followArtistRepository.findFirstByUserAndArtist(user,artist.get());
+
+        return followArtist.isPresent();
     }
 }
