@@ -49,6 +49,8 @@ public class User {
     @JsonBackReference
     private Set<EventReview> eventReviews;
 
+    @Column(name = "recoverPassowrdCode")
+    private String recoverPassowrdCode;
 
     public User(String username, String password, Set<Artist> artists) {
         this.username = username;

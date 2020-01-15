@@ -82,6 +82,15 @@ public class Application implements EnvironmentAware {
         final String imgPath = env.getProperty(PROP_PATH_TO_IMAGES, EMPTY_STRING);
         properties.add(PROP_PATH_TO_IMAGES, imgPath);
 
+        final String emailUsername = env.getProperty(PROP_EMAIL_USERNAME, EMPTY_STRING);
+        properties.add(PROP_EMAIL_USERNAME, emailUsername);
+
+        final String emailPassword = env.getProperty(PROP_EMAIL_PASSWORD, EMPTY_STRING);
+        properties.add(PROP_EMAIL_PASSWORD, emailPassword);
+
+        final String smtpServer = env.getProperty(PROP_EMAIL_SMTP_SERVER, EMPTY_STRING);
+        properties.add(PROP_EMAIL_SMTP_SERVER, smtpServer);
+
         ServerContext.setProperties(properties);
     }
 

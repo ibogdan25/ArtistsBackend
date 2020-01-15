@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import service.EmailEngine;
 import service.FollowArtistEventServiceImpl;
 import service.SessionServiceImpl;
 import service.UserServiceImpl;
@@ -20,10 +21,10 @@ public class UserController {
     private SessionServiceImpl sessionService;
     @Autowired
     private UserServiceImpl userService;
-
     @Autowired
     private FollowArtistEventServiceImpl followArtistEventService;
-
+    @Autowired
+    private EmailEngine emailEngine;
 
     Logger log = Logger.getLogger(UserController.class.getName());
 
@@ -225,4 +226,8 @@ public class UserController {
         return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
+    @RequestMapping(value = "/user/recoverPassword", method = RequestMethod.POST)
+    public void recoverPassword(@RequestParam(name = "email") final String email) {
+        emailEngine.sendRecoverPassowrd(email);
+    }
 }
