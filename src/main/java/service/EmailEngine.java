@@ -102,7 +102,7 @@ public class EmailEngine {
                 }
                 if (replaces != null) {
                     for(Map.Entry<String, String> entry: replaces.entrySet()) {
-                        html.replaceAll(entry.getKey(), entry.getValue());
+                        html = html.replaceAll(entry.getKey(), entry.getValue());
                     }
                 }
             } catch (FileNotFoundException e) {

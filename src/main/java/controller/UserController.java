@@ -10,6 +10,8 @@ import service.EmailEngine;
 import service.FollowArtistEventServiceImpl;
 import service.SessionServiceImpl;
 import service.UserServiceImpl;
+
+import javax.xml.ws.Response;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -229,5 +231,25 @@ public class UserController {
     @RequestMapping(value = "/user/resetPassword", method = RequestMethod.POST)
     public void recoverPassword(@RequestParam(name = "email") final String email) {
         emailEngine.sendRecoverPassowrd(email);
+    }
+
+    @RequestMapping(value = "/user/resetPassword/{token}", method = RequestMethod.POST)
+    public ResponseEntity doResetPassword(@PathVariable(name = "token") final String token,  @RequestBody String json) {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        PasswordPOJO passwordPOJO = null;
+        try {
+            passwordPOJO = objectMapper.readValue(json, PasswordPOJO.class);
+        } catch (IOException e) {
+            log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
+            return new ResponseEntity(new ErrorPOJO("JSON invalid"), HttpStatus.BAD_REQUEST);
+        }
+        ResetPasswordResponse response = userService.resetPassword(token, passwordPOJO);
+        if (response.equals(ResetPasswordResponse.PASSWORD_DOESNT_MATCH)) {
+            return new ResponseEntity(new ErrorPOJO("Password doesn't match"), HttpStatus.BAD_REQUEST);
+        }
+        if (response.equals(ResetPasswordResponse.TOKEN_INVALID)) {
+            return new ResponseEntity(new ErrorPOJO("Token invalid"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
