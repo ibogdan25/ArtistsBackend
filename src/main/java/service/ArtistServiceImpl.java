@@ -1,23 +1,28 @@
 package service;
 
-import model.Artist;
-import model.ArtistPost;
-import model.ArtistReview;
-import model.User;
+import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.ArtistRepository;
-import java.util.Optional;
+import repository.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
 public class ArtistServiceImpl implements ArtistService{
     private ArtistRepository artistRepository;
-
+    private UserRepository userRepository;
+    private ArtistSubcategoryRepository artistSubcategoryRepository;
+    private ContactInfoRepository contactInfoRepository ;
+    private AddressRepository addressRepository;
     @Autowired
-    public ArtistServiceImpl(ArtistRepository artistRepository) {
+    public ArtistServiceImpl(ArtistRepository artistRepository, UserRepository userRepository, ArtistSubcategoryRepository artistSubcategoryRepository,
+                             ContactInfoRepository contactInfoRepository, AddressRepository addressRepository) {
+        this.userRepository = userRepository;
         this.artistRepository = artistRepository;
+        this.artistSubcategoryRepository= artistSubcategoryRepository;
+        this.contactInfoRepository = contactInfoRepository;
+        this.addressRepository= addressRepository;
     }
 
     @Override
@@ -50,11 +55,14 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public Artist save(Artist artist) {
-        return  artistRepository.save(artist);
-    }
-
-    @Override
-    public Artist saveArtist(Artist artist) {
+        Optional<User> user = userRepository.findById(artist.getUser().getUserId());
+        if (!user.isPresent())
+            throw new EntityNotFoundException("The user with id: " + artist.getUser().getUserId()+ " could not be found");
+        Optional<ArtistSubcategory> artistSubcategory = artistSubcategoryRepository.findById(artist.getArtistSubcategory().getIdArtistSubcategory());
+        if (!artistSubcategory.isPresent())
+            throw new EntityNotFoundException("The subcategory with id: " + artist.getArtistSubcategory().getIdArtistSubcategory()+ " could not be found");
+        addressRepository.save(artist.getContactInfo().getAddress());
+        contactInfoRepository.save(artist.getContactInfo());
         return artistRepository.save(artist);
     }
 

@@ -19,9 +19,9 @@ public class    Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "artist_id")
-    private Long artistId;
+    private Long id;
 
-    @NotEmpty(message = "Name field in mandatory")
+//    @NotEmpty(message = "Name field in mandatory")
     @Column(name = "name")
     private String name;
 
@@ -43,19 +43,13 @@ public class    Artist {
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
-    @JsonManagedReference
+    @JsonBackReference
     private User user;
 
     @OneToOne
     @JoinColumn(name="id_artist_subcategory", nullable = false)
     @JsonManagedReference
     private ArtistSubcategory artistSubcategory;
-
-
-    @OneToOne
-    @JoinColumn(name="id_artist_category", nullable = false)
-    @JsonManagedReference
-    private ArtistCategory artistcategory;
 
     @OneToMany(mappedBy = "user")
     @JsonBackReference
@@ -71,14 +65,14 @@ public class    Artist {
     private String pastEvents;
 
     @Column(name = "highlighted_work")
-    private String highlightedWord;
+    private String highlightedWork;
 
     @OneToMany(mappedBy = "reviewedArtist")
-    @JsonBackReference
+    @JsonBackReference(value="reviews")
     private Set<ArtistReview> reviews;
 
     @OneToMany(mappedBy = "byArtist")
-    @JsonBackReference
+    @JsonBackReference(value="posts")
     private Set<ArtistPost> posts;
 
 }
