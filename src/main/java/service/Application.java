@@ -82,14 +82,17 @@ public class Application implements EnvironmentAware {
         final String imgPath = env.getProperty(PROP_PATH_TO_IMAGES, EMPTY_STRING);
         properties.add(PROP_PATH_TO_IMAGES, imgPath);
 
-        final String emailUsername = env.getProperty(PROP_EMAIL_USERNAME, EMPTY_STRING);
-        properties.add(PROP_EMAIL_USERNAME, emailUsername);
+        final String username = env.getProperty(PROP_EMAIL_USERNAME, EMPTY_STRING);
+        properties.add(PROP_EMAIL_USERNAME, username);
 
         final String emailPassword = env.getProperty(PROP_EMAIL_PASSWORD, EMPTY_STRING);
         properties.add(PROP_EMAIL_PASSWORD, emailPassword);
 
         final String smtpServer = env.getProperty(PROP_EMAIL_SMTP_SERVER, EMPTY_STRING);
         properties.add(PROP_EMAIL_SMTP_SERVER, smtpServer);
+
+        final String emailResetPasswordHtml = env.getProperty(PROP_EMAIL_RESET_PASSWORD_HTML, EMPTY_STRING);
+        properties.add(PROP_EMAIL_RESET_PASSWORD_HTML, emailResetPasswordHtml);
 
         ServerContext.setProperties(properties);
     }
@@ -107,7 +110,7 @@ public class Application implements EnvironmentAware {
 
     private static void loadCategories(final String pathCategories) {
         try {
-            File file = new File(pathCategories);
+            final File file = new File(pathCategories);
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlparsers.Categories.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             xmlparsers.Categories categories = (xmlparsers.Categories) jaxbUnmarshaller.unmarshal(file);

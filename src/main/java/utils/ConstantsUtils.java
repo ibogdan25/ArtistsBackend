@@ -27,6 +27,7 @@ public class ConstantsUtils {
     public final static String PROP_EMAIL_USERNAME = "email.username";
     public final static String PROP_EMAIL_PASSWORD = "email.password";
     public final static String PROP_EMAIL_SMTP_SERVER = "email.smtp.server";
+    public final static String PROP_EMAIL_RESET_PASSWORD_HTML = "email.emailResetPasswordHtml";
 
     public final static String TRUE = "TRUE";
     public final static String FALSE = "FALSE";

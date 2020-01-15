@@ -1,5 +1,6 @@
 package service;
 
+import model.EventPOJO;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +18,15 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 public class EmailEngine {
+    private static Logger log = Logger.getLogger(EmailEngine.class.getName());
+
     private final UserRepository userRepository;
 
     private final EmailEngineDetails emailEngineDetails;
@@ -50,7 +48,6 @@ public class EmailEngine {
     }
 
     private static final String EMAIL_SUBJECT = "Reset your password";
-    private static final String EMAIL_TEXT = "<h1>Hello Java Mail \n ABC123</h1>";
 
     public void sendRecoverPassowrd(final String email) {
         Optional<User> optionalUser = userRepository.findFirstByEmail(email);
@@ -58,10 +55,11 @@ public class EmailEngine {
             final String token = String.format("%s%s%s", UUID.randomUUID().toString().toUpperCase(), u.getUsername(), LocalDateTime.now().toString());
             u.setRecoverPassowrdCode(token);
             userRepository.save(u);
+            sendEmail(u.getEmail(), token);
         });
     }
 
-    public void sendEmail(final String email) {
+    public void sendEmail(final String email, final String token) {
         Session session = Session.getInstance(prop, null);
         Message msg = new MimeMessage(session);
         try {
@@ -70,8 +68,11 @@ public class EmailEngine {
                     InternetAddress.parse(email, false));
             msg.setSubject(EMAIL_SUBJECT);
 
+            Map<String, String> replaces = new HashMap<>();
+            replaces.put("token", token);
+
             // HTML email
-            msg.setDataHandler(new DataHandler(new HTMLDataSource(EMAIL_TEXT)));
+            msg.setDataHandler(new DataHandler(new HTMLDataSource(emailEngineDetails.getEmailResetPasswordHtml(), replaces)));
 
             SMTPTransport t = (SMTPTransport) session.getTransport("smtp");
 
@@ -91,8 +92,24 @@ public class EmailEngine {
 
         private String html;
 
-        public HTMLDataSource(String htmlString) {
-            html = htmlString;
+        public HTMLDataSource(String htmlFile, Map<String, String> replaces) {
+            final File file = new File(htmlFile);
+            try {
+                final BufferedReader reader = new BufferedReader(new FileReader(file));
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    html += line + "\n";
+                }
+                if (replaces != null) {
+                    for(Map.Entry<String, String> entry: replaces.entrySet()) {
+                        html.replaceAll(entry.getKey(), entry.getValue());
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                log.warning(String.format("Unable to read from html file %d", htmlFile));
+            } catch (IOException e) {
+                log.warning(String.format("Unable to read from html file %d", htmlFile));
+            }
         }
 
         @Override
