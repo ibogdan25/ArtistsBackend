@@ -21,7 +21,7 @@ public class    Artist {
     @Column(name = "artist_id")
     private Long id;
 
-    @NotEmpty(message = "Name field in mandatory")
+//    @NotEmpty(message = "Name field in mandatory")
     @Column(name = "name")
     private String name;
 
@@ -50,12 +50,6 @@ public class    Artist {
     @JoinColumn(name="id_artist_subcategory", nullable = false)
     @JsonManagedReference
     private ArtistSubcategory artistSubcategory;
-
-
-    //@OneToOne
-    //@JoinColumn(name="id_artist_category", nullable = false)
-    //@JsonManagedReference
-    //private ArtistCategory artistcategory;
 
     @OneToMany(mappedBy = "user")
     @JsonBackReference
