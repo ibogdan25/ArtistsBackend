@@ -15,7 +15,7 @@ public interface FollowEventRepository extends JpaRepository<FollowEvent,Long> {
     Iterable<FollowEvent> findFollowEventByUserAndEvent(@Param("user") final User user, @Param("event")final Event event);
 
 
-    @Query("SELECT f from FollowEvent f where f.user = :user ")
+    @Query("SELECT f from FollowEvent f where f.user = :user and f.followed=1")
     Iterable<FollowEvent> findAllByUser(@Param("user") final User user);
 
     Optional<FollowEvent> findFirstByUserAndEvent(@Param("user")final User user,@Param("event")final Event event);
