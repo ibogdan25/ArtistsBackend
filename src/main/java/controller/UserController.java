@@ -226,7 +226,7 @@ public class UserController {
         return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
-    @RequestMapping(value = "/user/recoverPassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/resetPassword", method = RequestMethod.POST)
     public void recoverPassword(@RequestParam(name = "email") final String email) {
         emailEngine.sendRecoverPassowrd(email);
     }
