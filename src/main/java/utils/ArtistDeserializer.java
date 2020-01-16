@@ -36,12 +36,6 @@ public class ArtistDeserializer extends StdDeserializer<ArtistPOJO> {
         artist.setHighlightedWork(artistNode.get("highlightedWork").textValue());
         artist.setStars(artistNode.get("stars").intValue());
 
-        JsonNode userNode = artistNode.get("user");
-        User user =  new User();
-        user.setUserId(userNode.get("userId").longValue());
-        artist.setUser(user);
-
-
         JsonNode contactInfoNode= artistNode.get("contactInfo");
         ContactInfo contactInfo= new ContactInfo();
         contactInfo.setEmails(contactInfoNode.get("emails").textValue());
@@ -57,9 +51,8 @@ public class ArtistDeserializer extends StdDeserializer<ArtistPOJO> {
         artist.setContactInfo(contactInfo);
 
         //The rest of the fields are taken from db because there is a fixed number of subcategories
-        JsonNode artistSubcategoryNode = artistNode.get("artistSubcategory");
         ArtistSubcategory artistSubcategory= new ArtistSubcategory();
-        artistSubcategory.setIdArtistSubcategory(artistSubcategoryNode.get("idArtistSubcategory").longValue());
+        artistSubcategory.setIdArtistSubcategory(artistNode.get("idArtistSubcategory").longValue());
         artist.setArtistSubcategory(artistSubcategory);
 
         return artist;

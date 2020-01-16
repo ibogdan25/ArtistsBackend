@@ -55,12 +55,10 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public Artist save(Artist artist) {
-        Optional<User> user = userRepository.findById(artist.getUser().getUserId());
-        if (!user.isPresent())
-            throw new EntityNotFoundException("The user with id: " + artist.getUser().getUserId()+ " could not be found");
         Optional<ArtistSubcategory> artistSubcategory = artistSubcategoryRepository.findById(artist.getArtistSubcategory().getIdArtistSubcategory());
         if (!artistSubcategory.isPresent())
             throw new EntityNotFoundException("The subcategory with id: " + artist.getArtistSubcategory().getIdArtistSubcategory()+ " could not be found");
+        artist.setArtistSubcategory(artistSubcategory.get());
         addressRepository.save(artist.getContactInfo().getAddress());
         contactInfoRepository.save(artist.getContactInfo());
         return artistRepository.save(artist);
