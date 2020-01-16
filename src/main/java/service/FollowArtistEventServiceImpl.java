@@ -147,7 +147,7 @@ public class FollowArtistEventServiceImpl {
     }
 
     public boolean followsEvent(User user, String eventId) {
-        Optional<Event> event = eventRepository.findByEventId(Long.valueOf(eventId));
+        Optional<Event> event = eventRepository.findById(Long.valueOf(eventId));
 
         if(!event.isPresent())
             return false;
