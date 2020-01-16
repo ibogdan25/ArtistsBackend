@@ -11,4 +11,5 @@ public interface ArtistService {
     Artist getById(Long id);
     Artist save(Artist artist);
     Iterable<ArtistPost> findAllPostsByArtistId(Long id);
+    Artist update(Artist artistEntity);
 }

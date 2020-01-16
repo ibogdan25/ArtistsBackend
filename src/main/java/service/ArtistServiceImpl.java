@@ -79,4 +79,28 @@ public class ArtistServiceImpl implements ArtistService{
             return artist.get().getPosts();
         return null;
     }
+
+    @Override
+    public Artist update(Artist artist) {
+        Long id = artist.getId();
+        Optional<Artist> optional= artistRepository.findById(id);
+
+        if(!optional.isPresent())
+            throw new EntityNotFoundException("The artist with id: " + id + " could not be found");
+        Artist artistFromDb = optional.get();
+
+        Address addressFromDb = addressRepository.getOne(artistFromDb.getContactInfo().getAddress().getAddressId());
+        artist.getContactInfo().getAddress().setAddressId(addressFromDb.getAddressId());
+        Address address = addressRepository.save(artist.getContactInfo().getAddress());
+
+        ContactInfo contactInfoFromDb = contactInfoRepository.getOne(artistFromDb.getContactInfo().getContactInfoId());
+        artist.getContactInfo().setContactInfoId(contactInfoFromDb.getContactInfoId());
+        artist.getContactInfo().setAddress(address);
+        ContactInfo contactInfo = contactInfoRepository.save(artist.getContactInfo());
+
+        artist.setContactInfo(contactInfo);
+        artist.setArtistSubcategory(artistFromDb.getArtistSubcategory());
+        return artistRepository.save(artist);
+
+    }
 }
