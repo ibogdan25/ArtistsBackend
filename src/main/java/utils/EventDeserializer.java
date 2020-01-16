@@ -10,9 +10,10 @@ import model.Address;
 import model.EventPOJO;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EventDeserializer  extends StdDeserializer<EventPOJO> {
     public EventDeserializer() {
@@ -28,15 +29,25 @@ public class EventDeserializer  extends StdDeserializer<EventPOJO> {
             throws IOException, JsonProcessingException {
 
         JsonNode eventNode = jp.getCodec().readTree(jp);
-        EventPOJO event = new EventPOJO();
+        EventPOJO pojo = new EventPOJO();
         if(eventNode.has("id")){
-            event.setId(eventNode.get("id").asLong());
+            pojo.setId(eventNode.get("id").asLong());
         }
-        event.setTitle(eventNode.get("title").textValue());
-        event.setDescription(eventNode.get("description").textValue());
-        event.setStartTime(eventNode.get("startTime").textValue());
-        event.setEndTime(eventNode.get("endTime").textValue());
+        pojo.setTitle(eventNode.get("title").textValue());
+        pojo.setDescription(eventNode.get("description").textValue());
 
+        //handle localdatetimes
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.RFC_1123_DATE_TIME;
+
+        String startTimeAsString = eventNode.get("startTime").textValue();
+        LocalDateTime startTime = LocalDateTime.parse(startTimeAsString, dateTimeFormatter);
+        pojo.setStartTime(startTime);
+
+        String endTimeAsString = eventNode.get("endTime").textValue();
+        LocalDateTime endTime = LocalDateTime.parse(endTimeAsString, dateTimeFormatter);
+        pojo.setEndTime(endTime);
+
+        //handle addresses
         JsonNode addressNode = eventNode.get("address");
         String country = addressNode.get("country").textValue();
         String city = addressNode.get("city").textValue();
@@ -48,8 +59,10 @@ public class EventDeserializer  extends StdDeserializer<EventPOJO> {
         address.setCity(city);
         address.setStreet(street);
         address.setNumber(number);
-        event.setAddress(address);
+        pojo.setAddress(address);
 
+
+        //handle artists
         List<String> names = new ArrayList<>();
         JsonNode artists = eventNode.get("artists");
 
@@ -58,7 +71,8 @@ public class EventDeserializer  extends StdDeserializer<EventPOJO> {
             names.add(arrayArtists.get(i).textValue());
         }
 
-        event.setArtists(String.join("|", names));
-        return event;
+        pojo.setArtists(String.join("|", names));
+
+        return pojo;
     }
 }

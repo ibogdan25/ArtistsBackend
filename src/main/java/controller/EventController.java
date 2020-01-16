@@ -44,7 +44,7 @@ public class EventController {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
             } catch (EntityNotFoundException e) {
                 log.warning("BAD_REQUEST: " + e.toString());
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ErrorPOJO(e.toString()), HttpStatus.BAD_REQUEST);
             }
         }
         return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
@@ -61,7 +61,7 @@ public class EventController {
                 return new ResponseEntity(HttpStatus.OK);
             } catch (IllegalArgumentException e) {
                 log.warning("BAD_REQUEST: " + e.toString());
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ErrorPOJO(e.toString()), HttpStatus.BAD_REQUEST);
             }
         }
         return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
@@ -85,7 +85,7 @@ public class EventController {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
             } catch (EntityNotFoundException e) {
                 log.warning("BAD_REQUEST: " + e.toString());
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ErrorPOJO(e.toString()), HttpStatus.BAD_REQUEST);
             }
         }
         return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
@@ -101,7 +101,7 @@ public class EventController {
                 return new ResponseEntity(event, HttpStatus.OK);
             } catch (EntityNotFoundException e) {
                 log.warning("BAD_REQUEST: " + e.toString());
-                return null;
+                return new ResponseEntity(new ErrorPOJO(e.toString()), HttpStatus.BAD_REQUEST);
             }
         }
         return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);

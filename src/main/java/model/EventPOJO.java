@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import utils.EventDeserializer;
 
+import java.time.LocalDateTime;
+
 @JsonDeserialize(using = EventDeserializer.class)
 public class EventPOJO {
     @Getter @Setter
@@ -17,10 +19,10 @@ public class EventPOJO {
     private String description;
 
     @Getter @Setter
-    private String startTime;
+    private LocalDateTime startTime;
 
     @Getter @Setter
-    private String endTime;
+    private LocalDateTime endTime;
 
     @Getter @Setter
     private String poster;

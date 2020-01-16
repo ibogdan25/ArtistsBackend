@@ -23,19 +23,21 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public long add(EventPOJO pojo) {
-        Event entity = new Event();
+        Event event = new Event();
 
         Address address = pojo.getAddress();
         this.addressRepository.save(address);
 
-        //mapping from pojo to entity
-        entity.setTitle(pojo.getTitle());
-        entity.setDescription(pojo.getDescription());
-        entity.setAddress(address);
-        entity.setArtists(pojo.getArtists());
-        entity.setUser(pojo.getUser());
+        //mapping from pojo to event
+        event.setTitle(pojo.getTitle());
+        event.setDescription(pojo.getDescription());
+        event.setStartTime(pojo.getStartTime());
+        event.setEndTime(pojo.getEndTime());
+        event.setAddress(address);
+        event.setArtists(pojo.getArtists());
+        event.setUser(pojo.getUser());
 
-        return this.eventRepository.save(entity).getEventId();
+        return this.eventRepository.save(event).getEventId();
     }
 
     @Override
@@ -52,29 +54,32 @@ public class EventServiceImpl implements EventService {
     @Override
     public void update(EventPOJO pojo) {
         long eventId = pojo.getId();
-        if (!this.eventRepository.findById(eventId).isPresent()) {
-            throw new EntityNotFoundException("Event with id "+eventId+" has not been found.");
-        }
 
-        Event event = new Event();
+        //get old event details
+        Event event = this.eventRepository.findById(eventId)
+                .orElseThrow(() -> {
+                    String msg = "Event entity with id "+eventId+" has not been found!";
+                    return new EntityNotFoundException(msg);
+                });
 
-        Address address = pojo.getAddress();
-        this.addressRepository.save(address);
 
-        //map from pojo to entity
+        //map from pojo to event
         event.setEventId(eventId);
         event.setTitle(pojo.getTitle());
         event.setDescription(pojo.getDescription());
-        event.setAddress(address);
+        event.setStartTime(pojo.getStartTime());
+        event.setEndTime(pojo.getEndTime());
+        event.setAddress(pojo.getAddress());
         event.setArtists(pojo.getArtists());
 
+        this.addressRepository.save(event.getAddress());
         this.eventRepository.save(event);
     }
 
     @Override
     public Event findById(long id) {
         return this.eventRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Event with id "+id+" has not been found."));
+                .orElseThrow(() -> new EntityNotFoundException("Event entity with id "+id+" has not been found!"));
     }
 
     @Override
