@@ -8,16 +8,18 @@ public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String name;
+    private String photoUrl;
 
-    private List<String> subcategories;
+    private List<Subcategory> subcategories;
+
 
     @XmlElementWrapper(name = "subcategories")
     @XmlElement(name = "subcategory")
-    public List<String> getSubcategories() {
+    public List<Subcategory> getSubcategories() {
         return subcategories;
     }
 
-    public void setSubcategories(List<String> subcategoryList) {
+    public void setSubcategories(List<Subcategory> subcategoryList) {
         this.subcategories = subcategoryList;
     }
 
@@ -25,6 +27,10 @@ public class Category implements Serializable {
     public String getName() {
         return name;
     }
+
+    public String getPhotoUrl(){return photoUrl; }
+
+    public void setPhotoUrl(String photoUrl) {this.photoUrl = photoUrl;}
 
     public void setName(String name) {
         this.name = name;

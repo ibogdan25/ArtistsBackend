@@ -14,6 +14,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import utils.Properties;
 import utils.ServerContext;
+import xmlparsers.Subcategory;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
@@ -103,10 +105,10 @@ public class Application implements EnvironmentAware {
             for (xmlparsers.Category category : categories.getCategories()) {
                 model.ArtistCategory artistCategory = new model.ArtistCategory(category.getName());
                 Set<ArtistSubcategory> artistSubcategories = new HashSet<>();
-                for (String subCategory : category.getSubcategories()) {
-                    artistSubcategories.add(new ArtistSubcategory(subCategory));
+                for (Subcategory subCategory : category.getSubcategories()){
+                    artistSubcategories.add(new ArtistSubcategory(subCategory.getName(),subCategory.getPhotoUrl()));
                 }
-
+                artistCategory.setPhotoUrl(category.getPhotoUrl());
                 artistCategory.setArtistSubcategorySet(artistSubcategories);
                 artistCategoriesService.addCategoryIfNotExists(artistCategory);
             }

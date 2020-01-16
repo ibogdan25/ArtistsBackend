@@ -22,6 +22,10 @@ public class ArtistSubcategory {
     @Column(name = "description")
     private String description;
 
+
+    @Column(name = "photo_url")
+    private String photoUrl;
+
     @ManyToOne
     @JoinColumn(name="id_artist_category", nullable = false)
     @JsonManagedReference
@@ -32,5 +36,10 @@ public class ArtistSubcategory {
     }
 
     public ArtistSubcategory() {
+    }
+
+    public ArtistSubcategory(String name, String photoUrl) {
+        this.name = name;
+        this.photoUrl = photoUrl;
     }
 }

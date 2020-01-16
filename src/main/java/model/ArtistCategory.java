@@ -27,6 +27,8 @@ public class ArtistCategory {
     @JsonBackReference
     private Set<ArtistSubcategory> artistSubcategorySet;
 
+    @Column(name = "photoUrl")
+    private String photoUrl;
 
     public ArtistCategory() {
     }

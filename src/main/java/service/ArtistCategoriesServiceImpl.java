@@ -48,6 +48,7 @@ public class ArtistCategoriesServiceImpl {
             ArtistCategory artistCategory = new ArtistCategory();
             artistCategory.setIdArtistCategory(x.getIdArtistCategory());
             artistCategory.setName(x.getName());
+            artistCategory.setPhotoUrl(x.getPhotoUrl());
             artistCategory.setArtistSubcategorySet(x.getArtistSubcategorySet());
 
             pojoList.add(artistCategory);

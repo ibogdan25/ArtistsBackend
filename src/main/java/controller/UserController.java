@@ -28,7 +28,16 @@ public class UserController {
     Logger log = Logger.getLogger(UserController.class.getName());
 
 
+    @RequestMapping(value = "/followsArtist",method = RequestMethod.GET)
+    @ResponseBody
+    public boolean followArtist(@RequestHeader(name = "Authorization")String token,@RequestParam("artistId")String artistId){
+        User user = sessionService.getSessionByToken(token);
+        if(user == null)
+            return false;
 
+        return followArtistEventService.followsArtist(user,artistId);
+
+    }
 
     @RequestMapping(value="/followArtistUser",method = RequestMethod.POST)
     public ResponseEntity<?> addFollowArtistUser(@RequestHeader(name = "Authorization") String token, @RequestParam("artistId") String artistId) {
@@ -38,6 +47,19 @@ public class UserController {
         }
 
         if(!followArtistEventService.addFollowArtistUser(user.getUserId().toString(), artistId))
+            return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value="/unfollowArtistUser",method = RequestMethod.DELETE)
+    public ResponseEntity<?> unfollowArtistUser(@RequestHeader(name = "Authorization") String token, @RequestParam("artistId") String artistId){
+        User user = sessionService.getSessionByToken(token);
+        if(user == null)
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+
+        if(!followArtistEventService.unfollowArtistUser(user.getUserId().toString(),artistId))
             return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -59,24 +81,44 @@ public class UserController {
     }
 
     @RequestMapping(value="/followArtistUser/allFollowedArtists",method = RequestMethod.GET)
-    public List<Artist> getAllFollowedArtists(@RequestHeader(name= "Authorization") String token){
+    public List<ArtistFollowPOJO> getAllFollowedArtists(@RequestHeader(name= "Authorization") String token){
         User user = sessionService.getSessionByToken(token);
         if(user == null){
             return null;
         }
-
         return followArtistEventService.getAllFollowedArtists(user);
     }
 
+    @RequestMapping(value="/followsEvent",method = RequestMethod.GET)
+    @ResponseBody
+    public boolean followsEvent(@RequestHeader(name="Authorization") String token,@RequestParam("eventId") String eventId){
+        User user = sessionService.getSessionByToken(token);
+        if(user == null){
+            return false;
+        }
+
+        return followArtistEventService.followsEvent(user,eventId);
+    }
+
     @RequestMapping(value="/followEventUser/allFollowedEvents",method = RequestMethod.GET)
-    public List<Event> getAllFollowedEvents(@RequestHeader(name="Authorization") String token){
+    public List<EventFollowPOJO> getAllFollowedEvents(@RequestHeader(name="Authorization") String token){
         User user = sessionService.getSessionByToken(token);
         if(user == null){
             return null;
         }
-
-
         return followArtistEventService.getAllFollowedEvents(user);
+    }
+
+    @RequestMapping(value="/unfollowEventUser",method=RequestMethod.DELETE)
+    public ResponseEntity<?> unfollowEventUser(@RequestHeader(name="Authorization")String token, @RequestParam("eventId") String eventId){
+        User user = sessionService.getSessionByToken(token);
+        if(user == null)
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+
+        if(!followArtistEventService.unfollowEventUser(user.getUserId().toString(),eventId))
+            return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

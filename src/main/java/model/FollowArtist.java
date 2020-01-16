@@ -7,6 +7,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="follow_artists")
@@ -28,5 +29,11 @@ public class FollowArtist {
     @JsonManagedReference
     @Fetch(FetchMode.JOIN)
     private User user;
+
+    @Column(name = "data",nullable = false)
+    private LocalDateTime data = LocalDateTime.now();
+
+    @Column(name = "followed",nullable = false)
+    private Boolean followed = true;
 
 }
