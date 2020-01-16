@@ -1,5 +1,7 @@
 package controller;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,5 +119,45 @@ public class ArtistController {
     public Iterable<ArtistPost> getAllPostsByArtistId(@PathVariable String id){
         return artistService.findAllPostsByArtistId(Long.parseLong(id));
     }
+
+    @RequestMapping(value = "/artists", method = RequestMethod.PUT)
+    public ResponseEntity updateArtist(@RequestHeader(name = "Authorization") String token,
+                                       @RequestBody String json)
+    {
+        User user = sessionService.getSessionByToken(token);
+        if(user!=null) {
+            final ObjectMapper objectMapper = new ObjectMapper();
+            ArtistPOJO artistPOJO;
+            try {
+                artistPOJO = objectMapper.readValue(json, ArtistPOJO.class);
+                Artist artistEntity = new Artist();
+                artistEntity.setName(artistPOJO.getName());
+                artistEntity.setDescription(artistPOJO.getDescription());
+                artistEntity.setAvatarUrl(artistPOJO.getAvatarUrl());
+                artistEntity.setCoverUrl(artistPOJO.getAvatarUrl());
+                artistEntity.setStars(artistPOJO.getStars());
+                artistEntity.setEducation(artistPOJO.getEducation());
+                artistEntity.setAwards(artistPOJO.getAwards());
+                artistEntity.setPastEvents(artistPOJO.getPastEvents());
+                artistEntity.setHighlightedWork(artistPOJO.getHighlightedWork());
+                artistEntity.setContactInfo(artistPOJO.getContactInfo());
+                artistEntity.setUser(user);
+                artistEntity.setId(artistPOJO.getId());
+                Artist artist= artistService.update(artistEntity);
+                log.info("Artist with id " + artist.getId() + " was successfully addded");
+                return new ResponseEntity(artist, HttpStatus.OK);
+
+            } catch (IOException | EntityNotFoundException e) {
+                e.printStackTrace();
+                return new ResponseEntity(new ErrorPOJO(e.getMessage()), HttpStatus.BAD_REQUEST);
+
+            }
+        }
+        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
+
+    }
+
+
+
 
 }
