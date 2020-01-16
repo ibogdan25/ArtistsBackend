@@ -29,9 +29,6 @@ public class ArtistPOJO {
     private ContactInfo contactInfo;
 
     @Getter @Setter
-    private User user;
-
-    @Getter @Setter
     private ArtistSubcategory artistSubcategory;
 
     @Getter @Setter

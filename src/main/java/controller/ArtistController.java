@@ -31,19 +31,12 @@ public class ArtistController {
     }
 
     @RequestMapping(value = "/artists/user",  method = RequestMethod.GET)
-    public ResponseEntity<?> getByUser(@RequestBody String userJson) {
-        final ObjectMapper objectMapper = new ObjectMapper();;
-        UserPOJO userPOJO = null;
-        try {
-            userPOJO = objectMapper.readValue(userJson, UserPOJO.class);
-        } catch (IOException e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> getByUser(@RequestHeader(name = "Authorization") String token) {
 
-        final User user = userService.getUser(userPOJO.getUserOrEmail(), userPOJO.getPassword());
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
+        User user = sessionService.getSessionByToken(token);
+        if(user == null)
+            return new ResponseEntity(new ErrorPOJO("Invalid token"), HttpStatus.UNAUTHORIZED);
+
         final Iterable<Artist> artists = artistService.getAllByUser(user);
         return new ResponseEntity<>(artists, HttpStatus.OK);
     }
@@ -60,13 +53,8 @@ public class ArtistController {
 
     @GetMapping("/artists")
     @ResponseBody
-    public ResponseEntity getAll(@RequestHeader(name = "Authorization") String token) {
-        User user = sessionService.getSessionByToken(token);
-        if(user!=null) {
-            return new ResponseEntity(artistService.getAll(), HttpStatus.OK);
-        }
-        log.warning("Invalid token");
-        return new ResponseEntity(new ErrorPOJO("Invalid token"), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity getAll(String token) {
+        return new ResponseEntity(artistService.getAll(), HttpStatus.OK);
     }
     @GetMapping("/artists/subcategory/{subcategory_id}")
     @ResponseBody
@@ -77,15 +65,11 @@ public class ArtistController {
 
     @GetMapping("/artists/id/{id}")
     @ResponseBody
-    public ResponseEntity getAllById(@RequestHeader(name = "Authorization") String token ,
-                                     @PathVariable String id) {
-        User user = sessionService.getSessionByToken(token);
-        if(user!=null) {
-            Artist artist = artistService.getById(Long.parseLong(id));
-            return new ResponseEntity(artist, HttpStatus.OK);
-        }
-        log.warning("Invalid token");
-        return new ResponseEntity(new ErrorPOJO("Invalid token"), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity getAllById(@PathVariable String id) {
+        Artist artist = artistService.getById(Long.parseLong(id));
+        if(artist==null)
+            return new ResponseEntity(new ErrorPOJO("Artist could not be found"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(artist, HttpStatus.OK);
     }
 
     @GetMapping("/artists/{id}/reviews")
@@ -100,7 +84,7 @@ public class ArtistController {
         User user = sessionService.getSessionByToken(token);
         if(user!=null) {
             final ObjectMapper objectMapper = new ObjectMapper();
-            ArtistPOJO artistPOJO = new ArtistPOJO();
+            ArtistPOJO artistPOJO ;
             try {
                 artistPOJO = objectMapper.readValue(json, ArtistPOJO.class);
                 Artist artistEntity = new Artist();
@@ -114,14 +98,14 @@ public class ArtistController {
                 artistEntity.setPastEvents(artistPOJO.getPastEvents());
                 artistEntity.setHighlightedWork(artistPOJO.getHighlightedWork());
                 artistEntity.setContactInfo(artistPOJO.getContactInfo());
-                artistEntity.setUser(artistPOJO.getUser());
+                artistEntity.setUser(user);
                 artistEntity.setArtistSubcategory(artistPOJO.getArtistSubcategory());
                 Artist artist = artistService.save(artistEntity);
                 log.info("Artist with id " + artist.getId() + " was successfully addded");
-                return new ResponseEntity(artist.getId(), HttpStatus.OK);
+                return new ResponseEntity(artist, HttpStatus.OK);
             } catch (IOException | EntityNotFoundException e) {
                 log.warning("Bad request. Error: " + e.toString());
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ErrorPOJO(e.getMessage()), HttpStatus.BAD_REQUEST);
             }
         }
         log.warning("Invalid token");
