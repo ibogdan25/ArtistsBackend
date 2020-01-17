@@ -22,7 +22,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public long add(EventPOJO pojo) {
+    public Event add(EventPOJO pojo) {
         Event event = new Event();
 
         Address address = pojo.getAddress();
@@ -39,7 +39,7 @@ public class EventServiceImpl implements EventService {
         event.setLinksToTickets(pojo.getLinksToTickets());
         event.setUser(pojo.getUser());
 
-        return this.eventRepository.save(event).getId();
+        return this.eventRepository.save(event);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void update(EventPOJO pojo) {
+    public Event update(EventPOJO pojo) {
         long eventId = pojo.getId();
 
         //get old event details
@@ -77,7 +77,7 @@ public class EventServiceImpl implements EventService {
         event.setLinksToTickets(pojo.getLinksToTickets());
 
         this.addressRepository.save(event.getAddress());
-        this.eventRepository.save(event);
+        return this.eventRepository.save(event);
     }
 
     @Override
