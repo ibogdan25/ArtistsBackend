@@ -20,7 +20,7 @@ public class ArtistPost {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "longtext")
     private String description;
 
     //imaginile vor fi splituite dupa ;

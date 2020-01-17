@@ -21,7 +21,7 @@ public class Event {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "longtext")
     private String description;
 
     @Column(name = "start_time")
@@ -30,17 +30,17 @@ public class Event {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @Column(name = "url_poster")
+    @Column(name = "url_poster", columnDefinition = "longtext")
     private String urlPoster;
 
     @ManyToOne
     @JoinColumn(name="address_id", nullable = false)
     private Address address;
 
-    @Column(name="artists")
+    @Column(name="artists", columnDefinition = "longtext")
     private String artists;
 
-    @Column(name="organizers")
+    @Column(name="organizers", columnDefinition = "longtext")
     private String organizers;
 
     @Column(name="tickets_links")

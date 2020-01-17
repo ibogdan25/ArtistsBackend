@@ -27,7 +27,7 @@ public class ArtistCategory {
     @JsonBackReference
     private Set<ArtistSubcategory> artistSubcategorySet;
 
-    @Column(name = "photoUrl")
+    @Column(name = "photoUrl", columnDefinition = "longtext")
     private String photoUrl;
 
     public ArtistCategory() {

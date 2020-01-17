@@ -19,11 +19,11 @@ public class ArtistSubcategory {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "longtext")
     private String description;
 
 
-    @Column(name = "photo_url")
+    @Column(name = "photo_url", columnDefinition = "longtext")
     private String photoUrl;
 
     @ManyToOne
