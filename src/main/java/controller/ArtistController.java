@@ -19,18 +19,14 @@ import java.util.logging.Logger;
 @RestController
 @CrossOrigin(origins = "*")
 public class ArtistController {
+    Logger log = Logger.getLogger(ArtistPOJO.class.getName());
 
     @Autowired
-    ArtistService artistService;
+    private ArtistService artistService;
     @Autowired
     private UserServiceImpl userService;
     @Autowired
     private SessionService sessionService;
-    Logger log = Logger.getLogger(ArtistPOJO.class.getName());
-    @RequestMapping("/")
-    public String index() {
-        return "Greetings from Spring Boot!";
-    }
 
     @RequestMapping(value = "/artists/user",  method = RequestMethod.GET)
     public ResponseEntity<?> getByUser(@RequestHeader(name = "Authorization") String token) {
@@ -58,6 +54,7 @@ public class ArtistController {
     public ResponseEntity getAll(String token) {
         return new ResponseEntity(artistService.getAll(), HttpStatus.OK);
     }
+
     @GetMapping("/artists/subcategory/{subcategory_id}")
     @ResponseBody
     public Iterable<Artist> getAllBySubcategory(@PathVariable String subcategory_id) {

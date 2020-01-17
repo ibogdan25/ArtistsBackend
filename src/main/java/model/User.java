@@ -1,7 +1,7 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
@@ -20,6 +20,7 @@ public class User {
     private String username;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "email")
@@ -29,7 +30,6 @@ public class User {
     private String profileImgSrc;
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
     private Set<Artist> artists;
 
 

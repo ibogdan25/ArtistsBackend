@@ -43,7 +43,7 @@ public class    Artist {
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private User user;
 
     @ManyToOne

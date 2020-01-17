@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 @RestController
 @CrossOrigin(origins = "*")
 public class EventController {
-    Logger log = Logger.getLogger(EventPOJO.class.getName());
+    Logger log = Logger.getLogger(EventController.class.getName());
 
     @Autowired
     private EventService eventService;

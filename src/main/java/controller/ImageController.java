@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 @RestController
 @CrossOrigin(origins = "*")
 public class ImageController {
-    private static Logger log = Logger.getLogger(FilesManager.class.getName());
+    private static Logger log = Logger.getLogger(ImageController.class.getName());
     private final Integer MAX_THREADS = 8;
     @Autowired
     private ArtistService artistService;
