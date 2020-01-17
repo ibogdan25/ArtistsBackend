@@ -84,6 +84,7 @@ public class ArtistController {
     public ResponseEntity saveArtist(@RequestHeader(name = "Authorization") String token,
                                      @RequestBody String json){
         User user = sessionService.getSessionByToken(token);
+        System.out.println((json ));
         if(user!=null) {
             final ObjectMapper objectMapper = new ObjectMapper();
             ArtistPOJO artistPOJO ;
@@ -93,7 +94,7 @@ public class ArtistController {
                 artistEntity.setName(artistPOJO.getName());
                 artistEntity.setDescription(artistPOJO.getDescription());
                 artistEntity.setAvatarUrl(artistPOJO.getAvatarUrl());
-                artistEntity.setCoverUrl(artistPOJO.getAvatarUrl());
+                artistEntity.setCoverUrl(artistPOJO.getCoverUrl());
                 artistEntity.setStars(artistPOJO.getStars());
                 artistEntity.setEducation(artistPOJO.getEducation());
                 artistEntity.setAwards(artistPOJO.getAwards());
@@ -134,7 +135,7 @@ public class ArtistController {
                 artistEntity.setName(artistPOJO.getName());
                 artistEntity.setDescription(artistPOJO.getDescription());
                 artistEntity.setAvatarUrl(artistPOJO.getAvatarUrl());
-                artistEntity.setCoverUrl(artistPOJO.getAvatarUrl());
+                artistEntity.setCoverUrl(artistPOJO.getCoverUrl());
                 artistEntity.setStars(artistPOJO.getStars());
                 artistEntity.setEducation(artistPOJO.getEducation());
                 artistEntity.setAwards(artistPOJO.getAwards());
