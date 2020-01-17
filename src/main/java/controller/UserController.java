@@ -124,7 +124,6 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/user/connect", method = RequestMethod.POST)
     public ResponseEntity connect(@RequestBody String json) {
         final ObjectMapper objectMapper = new ObjectMapper();
