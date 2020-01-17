@@ -15,14 +15,17 @@ public class ArtistServiceImpl implements ArtistService{
     private ArtistSubcategoryRepository artistSubcategoryRepository;
     private ContactInfoRepository contactInfoRepository ;
     private AddressRepository addressRepository;
+    private ArtistReviewRepository artistReviewRepository;
+
     @Autowired
     public ArtistServiceImpl(ArtistRepository artistRepository, UserRepository userRepository, ArtistSubcategoryRepository artistSubcategoryRepository,
-                             ContactInfoRepository contactInfoRepository, AddressRepository addressRepository) {
+                             ContactInfoRepository contactInfoRepository, AddressRepository addressRepository, ArtistReviewRepository artistReviewRepository) {
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
         this.artistSubcategoryRepository= artistSubcategoryRepository;
         this.contactInfoRepository = contactInfoRepository;
         this.addressRepository= addressRepository;
+        this.artistReviewRepository = artistReviewRepository;
     }
 
     @Override
@@ -103,4 +106,12 @@ public class ArtistServiceImpl implements ArtistService{
         return artistRepository.save(artist);
 
     }
+
+    @Override
+    public void addArtistReview(ArtistReview artistReview) throws Exception {
+        if(artistReviewRepository.existsArtistReviewByUserAndReviewedArtist(artistReview.getUser(), artistReview.getReviewedArtist()))
+            throw new Exception("The artist review already exists");
+        artistReviewRepository.save(artistReview);
+    }
+
 }

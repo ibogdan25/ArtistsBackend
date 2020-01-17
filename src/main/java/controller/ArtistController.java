@@ -157,6 +157,33 @@ public class ArtistController {
 
     }
 
+    @RequestMapping(value = "/addArtistReview", method = RequestMethod.POST)
+    public ResponseEntity addArtistReview(@RequestHeader(name="Authorization")String token, @RequestBody String json) {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        User user = sessionService.getSessionByToken(token);
+        ArtistReviewPOJO artistReviewPOJO = null;
+        ArtistReview artistReview = new ArtistReview();
+        if (user == null){
+            return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            artistReviewPOJO = objectMapper.readValue(json, ArtistReviewPOJO.class);
+            Artist artist = artistService.getById(artistReviewPOJO.getArtist());
+            if(artist == null){
+                return new ResponseEntity(new ErrorPOJO("Artist doesn't exist"),HttpStatus.BAD_REQUEST);
+            }
+            artistReview.setComment(artistReviewPOJO.getComment());
+            artistReview.setRating(artistReviewPOJO.getRating());
+            artistReview.setReviewedArtist(artist);
+            artistReview.setUser(user);
+            artistService.addArtistReview(artistReview);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            log.warning("Bad request. Error: " + e.toString());
+            return new ResponseEntity(new ErrorPOJO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+
+    }
 
 
 

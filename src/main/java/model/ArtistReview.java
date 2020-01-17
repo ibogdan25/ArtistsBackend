@@ -32,7 +32,7 @@ public class ArtistReview {
     @Min(1)
     @Max(5)
     @Column(name="rating")
-    private Long rating;
+    private Integer rating;
 
     @ManyToOne
     @JoinColumn(name="artist_id", nullable = false)
