@@ -15,7 +15,7 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @Table(name = "artists")
 @Getter @Setter
-public class    Artist {
+public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "artist_id")
