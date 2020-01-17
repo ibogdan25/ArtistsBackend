@@ -25,13 +25,13 @@ public class Artist {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "longtext")
     private String description;
 
-    @Column(name = "avatar_url")
+    @Column(name = "avatar_url", columnDefinition = "longtext")
     private String avatarUrl;
 
-    @Column(name = "cover_url")
+    @Column(name = "cover_url", columnDefinition = "longtext")
     private String coverUrl;
 
     @Column(name = "stars")
@@ -55,16 +55,16 @@ public class Artist {
     @JsonBackReference
     private Set<FollowArtist> followArtists;
 
-    @Column(name = "educations")
+    @Column(name = "educations", columnDefinition = "longtext")
     private String education;
 
-    @Column(name = "awards")
+    @Column(name = "awards", columnDefinition = "longtext")
     private String awards;
 
-    @Column(name = "past_events")
+    @Column(name = "past_events", columnDefinition = "longtext")
     private String pastEvents;
 
-    @Column(name = "highlighted_work")
+    @Column(name = "highlighted_work", columnDefinition = "longtext")
     private String highlightedWork;
 
     @OneToMany(mappedBy = "reviewedArtist")

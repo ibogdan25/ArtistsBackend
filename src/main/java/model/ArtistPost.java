@@ -20,12 +20,12 @@ public class ArtistPost {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "longtext")
     private String description;
 
     //imaginile vor fi splituite dupa ;
     // ex : url1,url2,url3
-    @Column(name = "images")
+    @Column(name = "images", columnDefinition = "longtext")
     private String images;
 
 

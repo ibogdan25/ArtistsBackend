@@ -26,7 +26,7 @@ public class EventReview {
     @JsonManagedReference
     private User user;
 
-    @Column(name = "comment")
+    @Column(name = "comment", columnDefinition = "longtext")
     private String comment;
 
     @Min(1)
