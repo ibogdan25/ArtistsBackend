@@ -119,17 +119,14 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public void addArtistPost(User user,ArtistPost artistPost) throws Exception {
-        Optional<Artist> artist = artistRepository.findArtistByUserId(user.getUserId());
-        if(artist.isPresent()){
-            if(artist.get().equals(artistPost.getByArtist()))
+        Iterable<Artist> artist = artistRepository.findArtistByUserId(user.getUserId());
+        for(Artist a: artist){
+            if(a.equals(artistPost.getByArtist())) {
                 artistPostRepository.save(artistPost);
-            else
-                throw new Exception("You are not allowed to post on this artist's profile!");
-
-        }else
-            throw new Exception("Invalid request!");
-
-
+                return;
+            }
+        }
+        throw new Exception("Invalid request!");
     }
 
 }

@@ -14,6 +14,8 @@ import service.UserServiceImpl;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 @RestController
@@ -182,5 +184,32 @@ public class ArtistController {
 
     }
 
-
+    @RequestMapping(value = "/addArtistPost", method = RequestMethod.POST)
+    public ResponseEntity addArtistPost(@RequestHeader(name="Authorization")String token, @RequestBody String json) {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        User user = sessionService.getSessionByToken(token);
+        ArtistPostPOJO artistPostPOJO = null;
+        ArtistPost artistPost = new ArtistPost();
+        if (user == null) {
+            return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            artistPostPOJO = objectMapper.readValue(json, ArtistPostPOJO.class);
+            Artist artist = artistService.getById(artistPostPOJO.getIdArtist());
+            if (artist == null) {
+                return new ResponseEntity(new ErrorPOJO("Artist does not exist"), HttpStatus.BAD_REQUEST);
+            }
+            artistPost.setByArtist(artist);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            artistPost.setDate(LocalDateTime.parse(artistPostPOJO.getDate(), formatter));
+            artistPost.setDescription(artistPostPOJO.getDescription());
+            artistPost.setImages(artistPostPOJO.getImages());
+            artistPost.setTitle(artistPostPOJO.getTitle());
+            artistService.addArtistPost(user, artistPost);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            log.warning("Bad request. Error: " + e.toString());
+            return new ResponseEntity(new ErrorPOJO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

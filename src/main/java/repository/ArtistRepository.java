@@ -24,5 +24,5 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     List<Artist> findAllByNameContaining(final String name);
 
     @Query("SELECT a from Artist a where a.user.userId = :user_id")
-    Optional<Artist> findArtistByUserId(@Param("user_id") final Long userId);
+    Iterable<Artist> findArtistByUserId(@Param("user_id") final Long userId);
 }

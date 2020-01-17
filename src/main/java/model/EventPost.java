@@ -15,7 +15,7 @@ public class EventPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_event_post")
-    private Long idArtistPost;
+    private Long idEventPost;
 
     @Column(name = "title")
     private String title;

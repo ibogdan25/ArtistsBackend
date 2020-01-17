@@ -1,10 +1,7 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.ErrorPOJO;
-import model.Event;
-import model.EventPOJO;
-import model.User;
+import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +11,8 @@ import service.SessionService;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 @RestController
@@ -139,5 +138,33 @@ public class EventController {
         return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
+    @RequestMapping(value = "/addEventPost", method = RequestMethod.POST)
+    public ResponseEntity addEventPost(@RequestHeader(name = "Authorization") String token, @RequestBody String json){
+        final ObjectMapper objectMapper = new ObjectMapper();
+        User user = sessionService.getSessionByToken(token);
+        if(user == null){
+            return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
+        }
+        EventPostPOJO eventPostPOJO = null;
+        EventPost eventPost = new EventPost();
+        try{
+            eventPostPOJO = objectMapper.readValue(json, EventPostPOJO.class);
+            Event event = eventService.findById(eventPostPOJO.getIdEvent());
+            if(event == null){
+                return new ResponseEntity(new ErrorPOJO("Event does not exist"), HttpStatus.BAD_REQUEST);
+            }
+            eventPost.setByEvent(event);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            eventPost.setDate(LocalDateTime.parse(eventPostPOJO.getDate(),formatter));
+            eventPost.setDescription(eventPostPOJO.getDescription());
+            eventPost.setImages(eventPostPOJO.getImages());
+            eventPost.setTitle(eventPostPOJO.getTitle());
+            eventService.addEventPost(user, eventPost);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            log.warning("Bad request. Error: " + e.toString());
+            return new ResponseEntity(new ErrorPOJO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

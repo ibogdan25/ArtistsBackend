@@ -4,6 +4,7 @@ import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.AddressRepository;
+import repository.EventPostRepository;
 import repository.EventRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -14,11 +15,13 @@ import java.util.Optional;
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final AddressRepository addressRepository;
+    private final EventPostRepository eventPostRepository;
 
     @Autowired
-    public EventServiceImpl(EventRepository eventRepository, AddressRepository addressRepository) {
+    public EventServiceImpl(EventRepository eventRepository, AddressRepository addressRepository, EventPostRepository eventPostRepository) {
         this.eventRepository = eventRepository;
         this.addressRepository = addressRepository;
+        this.eventPostRepository = eventPostRepository;
     }
 
     @Override
@@ -107,5 +110,15 @@ public class EventServiceImpl implements EventService {
         return null;
     }
 
-
+    @Override
+    public void addEventPost(User user, EventPost eventPost) throws Exception {
+        Iterable<Event> events = eventRepository.getEventsByUserId(user.getUserId());
+        for(Event e: events){
+            if(e.equals(eventPost.getByEvent())){
+                eventPostRepository.save(eventPost);
+                return;
+            }
+        }
+        throw new Exception("Invalid request!");
+    }
 }
