@@ -117,31 +117,21 @@ public class FollowArtistEventServiceImpl {
 
         return true;
     }
-    public List<ArtistFollowPOJO> getAllFollowedArtists(User user) {
+    public List<Artist> getAllFollowedArtists(User user) {
 
-        List<ArtistFollowPOJO> artists = new ArrayList<>();
+        List<Artist> artists = new ArrayList<>();
 
-        followArtistRepository.findAllByUser(user).forEach(x->{
-            ArtistFollowPOJO follow = new ArtistFollowPOJO();
-            follow.setData(x.getData());
-            follow.setArtist(x.getArtist());
-
-            artists.add(follow);
-
-        });
+        followArtistRepository.findAllByUser(user).forEach(x->
+            artists.add(x.getArtist()));
 
         return artists;
     }
 
-    public List<EventFollowPOJO> getAllFollowedEvents(User user){
-        List<EventFollowPOJO> events = new ArrayList<>();
+    public List<Event> getAllFollowedEvents(User user){
+        List<Event> events = new ArrayList<>();
 
-        followEventRepository.findAllByUser(user).forEach(x-> {
-            EventFollowPOJO event = new EventFollowPOJO();
-            event.setEvent(x.getEvent());
-            event.setData(x.getData());
-            events.add(event);
-        });
+        followEventRepository.findAllByUser(user).forEach(x->
+            events.add(x.getEvent()));
 
         return events;
     }
