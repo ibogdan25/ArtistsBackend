@@ -46,7 +46,7 @@ public class    Artist {
     @JsonBackReference
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="id_artist_subcategory", nullable = false)
     @JsonManagedReference
     private ArtistSubcategory artistSubcategory;
