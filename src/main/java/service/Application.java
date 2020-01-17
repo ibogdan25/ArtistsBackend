@@ -37,9 +37,12 @@ public class Application implements EnvironmentAware {
 
     private static ArtistCategoriesServiceImpl artistCategoriesService;
 
+    private static UserServiceImpl userService;
+
     @Autowired
-    public Application(ArtistCategoriesServiceImpl artistCategoriesService) {
+    public Application(ArtistCategoriesServiceImpl artistCategoriesService, UserServiceImpl userService) {
         this.artistCategoriesService = artistCategoriesService;
+        this.userService = userService;
     }
 
     @Override
@@ -82,6 +85,9 @@ public class Application implements EnvironmentAware {
         final String imgPath = env.getProperty(PROP_PATH_TO_IMAGES, EMPTY_STRING);
         properties.add(PROP_PATH_TO_IMAGES, imgPath);
 
+        final String createUserAdmin = env.getProperty(PROP_CREATE_USER_ADMIN, FALSE);
+        properties.add(PROP_CREATE_USER_ADMIN, createUserAdmin);
+
         final String username = env.getProperty(PROP_EMAIL_USERNAME, EMPTY_STRING);
         properties.add(PROP_EMAIL_USERNAME, username);
 
@@ -106,6 +112,17 @@ public class Application implements EnvironmentAware {
         if (!EMPTY_STRING.equals(pathCategories)) {
             loadCategories(pathCategories);
         }
+        final String createUserAdmin = properties.getValue(PROP_CREATE_USER_ADMIN);
+        if(TRUE.equals(createUserAdmin)) {
+            createUserAdmin();
+        }
+    }
+
+    private static void createUserAdmin() {
+        final String userName = "admin";
+        final String password = "admin";
+        final String email = "admin@admin.com";
+        userService.registerUser(userName, password, email);
     }
 
     private static void loadCategories(final String pathCategories) {

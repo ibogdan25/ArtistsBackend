@@ -24,6 +24,8 @@ public class ConstantsUtils {
 
     public final static String PROP_PATH_TO_IMAGES = "imagesPath";
 
+    public final static String PROP_CREATE_USER_ADMIN = "createUserAdmin";
+
     public final static String PROP_EMAIL_USERNAME = "email.username";
     public final static String PROP_EMAIL_PASSWORD = "email.password";
     public final static String PROP_EMAIL_SMTP_SERVER = "email.smtp.server";

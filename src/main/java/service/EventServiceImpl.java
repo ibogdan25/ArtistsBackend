@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @Service
 public class EventServiceImpl implements EventService {
-    private EventRepository eventRepository;
-    private AddressRepository addressRepository;
+    private final EventRepository eventRepository;
+    private final AddressRepository addressRepository;
 
     @Autowired
-    public EventServiceImpl(EventRepository eventRepository,AddressRepository addressRepository) {
+    public EventServiceImpl(EventRepository eventRepository, AddressRepository addressRepository) {
         this.eventRepository = eventRepository;
         this.addressRepository = addressRepository;
     }
@@ -47,7 +47,7 @@ public class EventServiceImpl implements EventService {
             return;
         }
 
-        throw new IllegalArgumentException("There is no Event entity with id "+id+" in the database!");
+        throw new IllegalArgumentException("There is no Event entity with id " + id + " in the database!");
 
     }
 
@@ -79,7 +79,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event findById(long id) {
         return this.eventRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Event entity with id "+id+" has not been found!"));
+                .orElseThrow(() -> new EntityNotFoundException("Event with id " + id + " has not been found."));
     }
 
     @Override
@@ -90,7 +90,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Iterable<EventReview> findAllReviewsByEventId(Long id) {
         Optional<Event> event = eventRepository.findById(id);
-        if(event.isPresent())
+        if (event.isPresent())
             return event.get().getReviews();
         return null;
     }
@@ -98,7 +98,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Iterable<EventPost> findAllPostsByEventId(Long id) {
         Optional<Event> event = eventRepository.findById(id);
-        if(event.isPresent())
+        if (event.isPresent())
             return event.get().getPosts();
         return null;
     }

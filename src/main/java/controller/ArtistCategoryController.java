@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 @CrossOrigin(origins = "*")
 public class ArtistCategoryController {
 
-    Logger log = Logger.getLogger(ArtistCategoryPOJO.class.getName());
+    Logger log = Logger.getLogger(ArtistCategoryController.class.getName());
 
     @Autowired
     private ArtistCategoriesServiceImpl artistCategoriesService;
