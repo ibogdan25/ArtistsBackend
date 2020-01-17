@@ -35,9 +35,9 @@ public class EventController {
             try {
                 pojo = objectMapper.readValue(json, EventPOJO.class);
                 pojo.setUser(sessionService.getSessionByToken(token));
-                long id = this.eventService.add(pojo);
-                log.info("Event with id " + id + " has been created!");
-                return new ResponseEntity(id, HttpStatus.OK);
+                Event event = this.eventService.add(pojo);
+                log.info("Event with id " + event.getId() + " has been created!");
+                return new ResponseEntity(event, HttpStatus.OK);
             } catch (IOException e) {
                 log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -76,9 +76,9 @@ public class EventController {
             final ObjectMapper objectMapper = new ObjectMapper();
             try {
                 pojo = objectMapper.readValue(json, EventPOJO.class);
-                this.eventService.update(pojo);
-                log.info("Event with id " + pojo.getId() + " has been updated!");
-                return new ResponseEntity(HttpStatus.OK);
+                Event event = this.eventService.update(pojo);
+                log.info("Event with id " + event.getId() + " has been updated!");
+                return new ResponseEntity(event, HttpStatus.OK);
             } catch (IOException e) {
                 log.info(String.format("BAD_REQUEST for %s", json.replaceAll("\n", "")));
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -91,35 +91,26 @@ public class EventController {
     }
 
     @RequestMapping(value = "/event", method = RequestMethod.GET)
-    public ResponseEntity getEvent(@RequestHeader(name = "Authorization") String token,
-                          @RequestParam long id) {
-        User user = sessionService.getSessionByToken(token);
-        if (user != null) {
-            try {
-                Event event = this.eventService.findById(id);
-                return new ResponseEntity(event, HttpStatus.OK);
-            } catch (EntityNotFoundException e) {
-                log.warning("BAD_REQUEST: " + e.toString());
-                return new ResponseEntity(new ErrorPOJO(e.toString()), HttpStatus.BAD_REQUEST);
-            }
+    public ResponseEntity getEvent(@RequestParam long id) {
+        try {
+            Event event = this.eventService.findById(id);
+            return new ResponseEntity(event, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            log.warning("BAD_REQUEST: " + e.toString());
+            return new ResponseEntity(new ErrorPOJO(e.toString()), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
     }
 
 
     @RequestMapping(value = "/event/all", method = RequestMethod.GET)
-    public ResponseEntity getAllEvents(@RequestHeader(name = "Authorization") String token) {
-        User user = sessionService.getSessionByToken(token);
-        if (user != null) {
-            return new ResponseEntity(this.eventService.findAll(), HttpStatus.OK);
-        }
-        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity getAllEvents() {
+        return new ResponseEntity(this.eventService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/event/{id}/reviews")
     @ResponseBody
     public ResponseEntity getAllReviewsByEventId(@RequestHeader(name = "Authorization") String token,
-                                                        @PathVariable String id) {
+                                                 @PathVariable String id) {
         User user = sessionService.getSessionByToken(token);
         if (user != null) {
             return new ResponseEntity(eventService.findAllReviewsByEventId(Long.parseLong(id)), HttpStatus.OK);
@@ -130,7 +121,7 @@ public class EventController {
     @GetMapping("/event/{id}/posts")
     @ResponseBody
     public ResponseEntity getAllPostsByEventId(@RequestHeader(name = "Authorization") String token,
-                                                    @PathVariable String id) {
+                                               @PathVariable String id) {
         User user = sessionService.getSessionByToken(token);
         if (user != null) {
             return new ResponseEntity(eventService.findAllPostsByEventId(Long.parseLong(id)), HttpStatus.OK);

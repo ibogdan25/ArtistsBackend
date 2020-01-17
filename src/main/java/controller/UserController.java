@@ -84,7 +84,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/followArtistUser/allFollowedArtists",method = RequestMethod.GET)
-    public List<ArtistFollowPOJO> getAllFollowedArtists(@RequestHeader(name= "Authorization") String token){
+    public List<Artist> getAllFollowedArtists(@RequestHeader(name= "Authorization") String token){
         User user = sessionService.getSessionByToken(token);
         if(user == null){
             return null;
@@ -104,7 +104,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/followEventUser/allFollowedEvents",method = RequestMethod.GET)
-    public List<EventFollowPOJO> getAllFollowedEvents(@RequestHeader(name="Authorization") String token){
+    public List<Event> getAllFollowedEvents(@RequestHeader(name="Authorization") String token){
         User user = sessionService.getSessionByToken(token);
         if(user == null){
             return null;
