@@ -1,5 +1,6 @@
 package service;
 
+import javassist.bytecode.ExceptionsAttribute;
 import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,6 +92,8 @@ public class ArtistServiceImpl implements ArtistService{
         if(!optional.isPresent())
             throw new EntityNotFoundException("The artist with id: " + id + " could not be found");
         Artist artistFromDb = optional.get();
+        if (!artistFromDb.getUser().getUserId().equals(artist.getUser().getUserId()))
+            throw new EntityNotFoundException("The selected artist cannot be modified because he/she is not one of yours");
 
         Address addressFromDb = addressRepository.getOne(artistFromDb.getContactInfo().getAddress().getAddressId());
         artist.getContactInfo().getAddress().setAddressId(addressFromDb.getAddressId());
@@ -112,6 +115,19 @@ public class ArtistServiceImpl implements ArtistService{
         if(artistReviewRepository.existsArtistReviewByUserAndReviewedArtist(artistReview.getUser(), artistReview.getReviewedArtist()))
             throw new Exception("The artist review already exists");
         artistReviewRepository.save(artistReview);
+
+        //recalculating artist's stars
+        Artist artist = artistReview.getReviewedArtist();
+        Iterable<ArtistReview> reviews= artistReviewRepository.findArtistReviewsByReviewedArtist(artist);
+        int sumStars=0;
+        int size =0 ;
+        for (ArtistReview review: reviews) {
+            sumStars += review.getRating();
+            size++;
+        }
+        Integer stars = sumStars/size;
+        artist.setStars(stars);
+        artistRepository.save(artist);
     }
 
 }
