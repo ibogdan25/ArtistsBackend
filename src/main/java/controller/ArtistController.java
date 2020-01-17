@@ -201,7 +201,7 @@ public class ArtistController {
             }
             artistPost.setByArtist(artist);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            artistPost.setDate(LocalDateTime.parse(artistPostPOJO.getDate(), formatter));
+            artistPost.setDate(LocalDateTime.now());
             artistPost.setDescription(artistPostPOJO.getDescription());
             artistPost.setImages(artistPostPOJO.getImages());
             artistPost.setTitle(artistPostPOJO.getTitle());

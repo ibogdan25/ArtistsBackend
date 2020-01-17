@@ -120,13 +120,8 @@ public class EventController {
 
     @GetMapping("/event/{id}/posts")
     @ResponseBody
-    public ResponseEntity getAllPostsByEventId(@RequestHeader(name = "Authorization") String token,
-                                               @PathVariable String id) {
-        User user = sessionService.getSessionByToken(token);
-        if (user != null) {
-            return new ResponseEntity(eventService.findAllPostsByEventId(Long.parseLong(id)), HttpStatus.OK);
-        }
-        return new ResponseEntity(new ErrorPOJO("TOKEN INVALID"), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity getAllPostsByEventId(@PathVariable String id) {
+        return new ResponseEntity(eventService.findAllPostsByEventId(Long.parseLong(id)), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/addEventPost", method = RequestMethod.POST)
@@ -146,7 +141,7 @@ public class EventController {
             }
             eventPost.setByEvent(event);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            eventPost.setDate(LocalDateTime.parse(eventPostPOJO.getDate(),formatter));
+            eventPost.setDate(LocalDateTime.now());
             eventPost.setDescription(eventPostPOJO.getDescription());
             eventPost.setImages(eventPostPOJO.getImages());
             eventPost.setTitle(eventPostPOJO.getTitle());

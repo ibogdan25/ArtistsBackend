@@ -8,7 +8,6 @@ import lombok.Setter;
 public class EventPostPOJO {
     private String title;
     private String description;
-    private String date;
     private String images;
     private Long idEvent;
 }
