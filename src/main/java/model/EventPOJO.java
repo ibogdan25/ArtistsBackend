@@ -34,5 +34,11 @@ public class EventPOJO {
     private String artists;
 
     @Getter @Setter
+    private String organizers;
+
+    @Getter @Setter
+    private String linksToTickets;
+
+    @Getter @Setter
     private User user;
 }

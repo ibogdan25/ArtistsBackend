@@ -35,9 +35,11 @@ public class EventServiceImpl implements EventService {
         event.setEndTime(pojo.getEndTime());
         event.setAddress(address);
         event.setArtists(pojo.getArtists());
+        event.setOrganizers(pojo.getOrganizers());
+        event.setLinksToTickets(pojo.getLinksToTickets());
         event.setUser(pojo.getUser());
 
-        return this.eventRepository.save(event).getEventId();
+        return this.eventRepository.save(event).getId();
     }
 
     @Override
@@ -64,13 +66,15 @@ public class EventServiceImpl implements EventService {
 
 
         //map from pojo to event
-        event.setEventId(eventId);
+        event.setId(eventId);
         event.setTitle(pojo.getTitle());
         event.setDescription(pojo.getDescription());
         event.setStartTime(pojo.getStartTime());
         event.setEndTime(pojo.getEndTime());
         event.setAddress(pojo.getAddress());
         event.setArtists(pojo.getArtists());
+        event.setOrganizers(pojo.getOrganizers());
+        event.setLinksToTickets(pojo.getLinksToTickets());
 
         this.addressRepository.save(event.getAddress());
         this.eventRepository.save(event);

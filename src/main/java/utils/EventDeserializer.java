@@ -63,15 +63,37 @@ public class EventDeserializer  extends StdDeserializer<EventPOJO> {
 
 
         //handle artists
-        List<String> names = new ArrayList<>();
-        JsonNode artists = eventNode.get("artists");
+        List<String> artistsList = new ArrayList<>();
+        JsonNode jsonArtists = eventNode.get("artists");
 
-        ArrayNode arrayArtists = (ArrayNode) artists;
+        ArrayNode arrayArtists = (ArrayNode) jsonArtists;
         for (int i = 0; i < arrayArtists.size(); i++) {
-            names.add(arrayArtists.get(i).textValue());
+            artistsList.add(arrayArtists.get(i).textValue());
         }
 
-        pojo.setArtists(String.join("|", names));
+        pojo.setArtists(String.join("|", artistsList));
+
+        //handle organizers
+        List<String> organizersList = new ArrayList<>();
+        JsonNode jsonOrganizers = eventNode.get("organizers");
+
+        ArrayNode arrayOrganizers = (ArrayNode) jsonOrganizers;
+        for (int i = 0; i < arrayOrganizers.size(); i++) {
+            organizersList.add(arrayOrganizers.get(i).textValue());
+        }
+
+        pojo.setOrganizers(String.join("|", organizersList));
+
+        //handle links to tickets
+        List<String> ticketsLinksList = new ArrayList<>();
+        JsonNode jsonTicketLinks = eventNode.get("linksToTickets");
+
+        ArrayNode arrayLinksToTickets = (ArrayNode) jsonTicketLinks;
+        for (int i = 0; i < arrayLinksToTickets.size(); i++) {
+            ticketsLinksList.add(arrayLinksToTickets.get(i).textValue());
+        }
+
+        pojo.setLinksToTickets(String.join("|", ticketsLinksList));
 
         return pojo;
     }
