@@ -16,16 +16,19 @@ public class ArtistServiceImpl implements ArtistService{
     private ContactInfoRepository contactInfoRepository ;
     private AddressRepository addressRepository;
     private ArtistReviewRepository artistReviewRepository;
+    private ArtistPostRepository artistPostRepository;
 
     @Autowired
     public ArtistServiceImpl(ArtistRepository artistRepository, UserRepository userRepository, ArtistSubcategoryRepository artistSubcategoryRepository,
-                             ContactInfoRepository contactInfoRepository, AddressRepository addressRepository, ArtistReviewRepository artistReviewRepository) {
+                             ContactInfoRepository contactInfoRepository, AddressRepository addressRepository, ArtistReviewRepository artistReviewRepository,
+                             ArtistPostRepository artistPostRepository) {
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
         this.artistSubcategoryRepository= artistSubcategoryRepository;
         this.contactInfoRepository = contactInfoRepository;
         this.addressRepository= addressRepository;
         this.artistReviewRepository = artistReviewRepository;
+        this.artistPostRepository = artistPostRepository;
     }
 
     @Override
@@ -112,6 +115,21 @@ public class ArtistServiceImpl implements ArtistService{
         if(artistReviewRepository.existsArtistReviewByUserAndReviewedArtist(artistReview.getUser(), artistReview.getReviewedArtist()))
             throw new Exception("The artist review already exists");
         artistReviewRepository.save(artistReview);
+    }
+
+    @Override
+    public void addArtistPost(User user,ArtistPost artistPost) throws Exception {
+        Optional<Artist> artist = artistRepository.findArtistByUserId(user.getUserId());
+        if(artist.isPresent()){
+            if(artist.get().equals(artistPost.getByArtist()))
+                artistPostRepository.save(artistPost);
+            else
+                throw new Exception("You are not allowed to post on this artist's profile!");
+
+        }else
+            throw new Exception("Invalid request!");
+
+
     }
 
 }

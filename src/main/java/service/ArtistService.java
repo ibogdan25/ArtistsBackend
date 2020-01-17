@@ -13,4 +13,5 @@ public interface ArtistService {
     Iterable<ArtistPost> findAllPostsByArtistId(Long id);
     Artist update(Artist artistEntity);
     void addArtistReview(ArtistReview artistReview) throws Exception;
+    void addArtistPost(User user,ArtistPost artistPost) throws Exception;
 }
