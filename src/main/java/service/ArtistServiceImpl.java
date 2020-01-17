@@ -17,16 +17,19 @@ public class ArtistServiceImpl implements ArtistService{
     private ContactInfoRepository contactInfoRepository ;
     private AddressRepository addressRepository;
     private ArtistReviewRepository artistReviewRepository;
+    private ArtistPostRepository artistPostRepository;
 
     @Autowired
     public ArtistServiceImpl(ArtistRepository artistRepository, UserRepository userRepository, ArtistSubcategoryRepository artistSubcategoryRepository,
-                             ContactInfoRepository contactInfoRepository, AddressRepository addressRepository, ArtistReviewRepository artistReviewRepository) {
+                             ContactInfoRepository contactInfoRepository, AddressRepository addressRepository, ArtistReviewRepository artistReviewRepository,
+                             ArtistPostRepository artistPostRepository) {
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
         this.artistSubcategoryRepository= artistSubcategoryRepository;
         this.contactInfoRepository = contactInfoRepository;
         this.addressRepository= addressRepository;
         this.artistReviewRepository = artistReviewRepository;
+        this.artistPostRepository = artistPostRepository;
     }
 
     @Override
@@ -128,6 +131,18 @@ public class ArtistServiceImpl implements ArtistService{
         Integer stars = sumStars/size;
         artist.setStars(stars);
         artistRepository.save(artist);
+    }
+
+    @Override
+    public void addArtistPost(User user,ArtistPost artistPost) throws Exception {
+        Iterable<Artist> artist = artistRepository.findArtistByUserId(user.getUserId());
+        for(Artist a: artist){
+            if(a.equals(artistPost.getByArtist())) {
+                artistPostRepository.save(artistPost);
+                return;
+            }
+        }
+        throw new Exception("Invalid request!");
     }
 
 }
