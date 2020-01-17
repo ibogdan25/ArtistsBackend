@@ -25,7 +25,7 @@ public class ArtistPost {
 
     //imaginile vor fi splituite dupa ;
     // ex : url1,url2,url3
-    @Column(name = "images")
+    @Column(name = "images", columnDefinition = "longtext")
     private String images;
 
 
