@@ -12,6 +12,5 @@ public class ArtistPostPOJO {
     private String title;
     private String description;
     private String images;
-    private String date;
     private Long idArtist;
 }
