@@ -33,6 +33,7 @@ public class EventServiceImpl implements EventService {
 
         //mapping from pojo to event
         event.setTitle(pojo.getTitle());
+        event.setUrlPoster(pojo.getUrlPoster());
         event.setDescription(pojo.getDescription());
         event.setStartTime(pojo.getStartTime());
         event.setEndTime(pojo.getEndTime());
@@ -71,6 +72,7 @@ public class EventServiceImpl implements EventService {
         //map from pojo to event
         event.setId(eventId);
         event.setTitle(pojo.getTitle());
+        event.setUrlPoster(pojo.getUrlPoster());
         event.setDescription(pojo.getDescription());
         event.setStartTime(pojo.getStartTime());
         event.setEndTime(pojo.getEndTime());

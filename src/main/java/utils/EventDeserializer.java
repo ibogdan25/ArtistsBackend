@@ -34,6 +34,7 @@ public class EventDeserializer  extends StdDeserializer<EventPOJO> {
             pojo.setId(eventNode.get("id").asLong());
         }
         pojo.setTitle(eventNode.get("title").textValue());
+        pojo.setUrlPoster(eventNode.get("urlPoster").textValue());
         pojo.setDescription(eventNode.get("description").textValue());
 
         //handle localdatetimes
