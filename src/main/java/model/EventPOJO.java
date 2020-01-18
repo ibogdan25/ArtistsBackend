@@ -25,7 +25,7 @@ public class EventPOJO {
     private LocalDateTime endTime;
 
     @Getter @Setter
-    private String poster;
+    private String urlPoster;
 
     @Getter @Setter
     private Address address;
